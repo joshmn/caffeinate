@@ -2,6 +2,11 @@
 
 Important additions/changes/removals will appear here.
 
+## v2.0.1 (September 11, 2021)
+
+### Fixed
+* Unsubscribe/resubscribe links on views of the `CampaignSubscriptionsController`
+
 ## v2.0.0 (September 11, 2021)
 
 ### Changed
