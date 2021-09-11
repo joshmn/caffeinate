@@ -22,7 +22,7 @@ require 'caffeinate/dripper_collection'
 
 module Caffeinate
   def self.dripper_collection
-    @drippers ||= DripperCollection.new
+    @dripper_collection ||= DripperCollection.new
   end
 
   # Global configuration

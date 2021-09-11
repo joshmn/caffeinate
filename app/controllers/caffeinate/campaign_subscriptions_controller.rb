@@ -9,11 +9,11 @@ module Caffeinate
     before_action :find_campaign_subscription!
 
     def unsubscribe
-      @campaign_subscription.unsubscribe!
+      @campaign_subscription.unsubscribe!(true)
     end
 
     def subscribe
-      @campaign_subscription.resubscribe!
+      @campaign_subscription.resubscribe!(true)
     end
 
     private
