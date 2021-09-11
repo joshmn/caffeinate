@@ -55,7 +55,7 @@ module Caffeinate
 
     before_validation :call_dripper_before_subscribe_blocks!, on: :create
 
-    after_commit :create_mailings!, on: :create
+    after_create :create_mailings!
 
     after_commit :on_complete, if: :completed?
 
@@ -133,7 +133,7 @@ module Caffeinate
 
     # Checks if the record is not new and if mailings are all gone.
     def completed?
-      !saved_change_to_attribute?(:id) && caffeinate_mailings.unsent.count.zero?
+      caffeinate_mailings.unsent.count.zero?
     end
 
     private

@@ -2,6 +2,17 @@
 
 Important additions/changes/removals will appear here.
 
+## v2.0.0 (September 11, 2021)
+
+### Changed
+* `CampaignSubscription` now creates the relevant mailings using `after_create` instead of `after_commit` 
+    - The original logic was flawed: the `on_complete` callback for a `Dripper` would be invoked due to how a
+      `CampaignSubscription` is considered complete: `mailings.unsent.count.zero?`. `after_create` creates the mailings 
+      in the same transaction as the `CampaignSubscription`, not outside of it.
+      
+### Removed
+* Duplicate `#resubscribe!` method on `CampaignSubscription`
+
 ## v0.16 (April 14, 2021)
 
 ### Changed
