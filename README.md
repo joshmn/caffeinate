@@ -28,6 +28,10 @@ No! Not at all!
 
 There's not a lot of activity here because it's stable and working! I am more than happy to entertain new features.
 
+## Oh my gosh, a web UI!
+
+See https://github.com/joshmn/caffeinate-webui for an accompanying lightweight UI for simple administrative tasks and overview.
+
 ## Do you suffer from ActionMailer tragedies?
 
 If you have _anything_ like this is your codebase, **you need Caffeinate**:
