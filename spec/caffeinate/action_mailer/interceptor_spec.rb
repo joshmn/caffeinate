@@ -3,6 +3,18 @@
 require 'rails_helper'
 
 describe Caffeinate::ActionMailer::Interceptor do
+  before(:all) do
+    $store = Store.new
+  end
+
+  after(:all) do
+    $store = nil
+  end
+
+  after(:each) do
+    $store.reset!
+  end
+
   it 'is registered' do
     expect(Mail.class_variable_get(:@@delivery_interceptors)).to include(described_class)
   end
@@ -35,7 +47,7 @@ describe Caffeinate::ActionMailer::Interceptor do
       before do
         campaign.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
         campaign.to_dripper.before_send do
-          @@before_send_called = true
+          $store.increment(:before_send)
         end
       end
 
@@ -44,10 +56,12 @@ describe Caffeinate::ActionMailer::Interceptor do
         expect(mail.header['List-Unsubscribe']).to be_present
         described_class.delivering_email(mail)
       end
+
       it 'runs before_send callbacks' do
         mail.caffeinate_mailing = mailing
         described_class.delivering_email(mail)
-        expect(campaign.to_dripper).to be_class_variable_defined(:@@before_send_called)
+
+        expect($store.get(:before_send)).to eq(1)
       end
 
       it 'sets performed_deliveries to the result of the evaluator' do

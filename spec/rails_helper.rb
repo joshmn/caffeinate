@@ -35,6 +35,25 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
+
+class Store
+  def initialize
+    @store = Hash.new { |hash, key| hash[key] = 0 }
+  end
+
+  def increment(key)
+    @store[key] += 1
+  end
+
+  def get(key)
+    @store[key]
+  end
+
+  def reset!
+    @store = Hash.new { |hash, key| hash[key] = 0 }
+  end
+end
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.before(:suite) do

@@ -32,6 +32,10 @@ describe ::Caffeinate::Dripper::Delivery do
   class DeliveryTestDripper < ::Caffeinate::Dripper::Base
     self.campaign = :delivery_test_dripper
 
+    rescue_from StandardError do
+      end!
+    end
+
     default mailer_class: 'DeliveryTestMailer'
 
     drip :welcome, delay: 0.hours
@@ -110,5 +114,26 @@ describe ::Caffeinate::Dripper::Delivery do
     let(:do_action) { DeliveryTestDripper.deliver!(mailing) }
 
     it_behaves_like 'block that returns false and unsubscribes'
+  end
+
+  context 'error' do
+    before do
+      DeliveryTestDripper.rescue_from StandardError do |exception|
+        self.caffeinate_campaign_subscription.end
+      end
+
+      allow_any_instance_of(::Mail::Message).to receive(:deliver).and_raise(StandardError)
+    end
+
+    let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'goodbye_end') }
+    let(:do_action) { DeliveryTestDripper.deliver!(mailing) }
+
+    it 'is handled gracefully' do
+      expect { do_action }.to_not raise_error(StandardError)
+    end
+
+    it 'unsubscribes' do
+      expect { do_action }.to change(mailing.caffeinate_campaign_subscription, :ended_at)
+    end
   end
 end

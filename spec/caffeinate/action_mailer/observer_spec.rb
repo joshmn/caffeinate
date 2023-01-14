@@ -3,6 +3,19 @@
 require 'rails_helper'
 
 describe Caffeinate::ActionMailer::Observer do
+  before(:all) do
+    $store = Store.new
+  end
+
+  after(:all) do
+    $store = nil
+  end
+
+  after(:each) do
+    $store.reset!
+  end
+
+
   it 'is registered' do
     expect(Mail.class_variable_get(:@@delivery_notification_observers)).to include(described_class)
   end
@@ -29,14 +42,14 @@ describe Caffeinate::ActionMailer::Observer do
       before do
         campaign.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
         campaign.to_dripper.after_send do
-          @@after_send_called = true
+          $store.increment(:after_send)
         end
       end
 
       it 'runs before_send callbacks' do
         mail.caffeinate_mailing = mailing
         described_class.delivered_email(mail)
-        expect(campaign.to_dripper).to be_class_variable_defined(:@@after_send_called)
+        expect($store.get(:after_send)).to eq(1)
       end
 
       it 'updates mailing to the current time' do

@@ -19,11 +19,11 @@ module Caffeinate
     private
 
     def caffeinate_subscribe_url(**options)
-      Caffeinate::UrlHelpers.caffeinate_subscribe_url(@campaign_subscription, options)
+      Caffeinate::UrlHelpers.caffeinate_subscribe_url(@campaign_subscription, **options)
     end
 
     def caffeinate_unsubscribe_url(**options)
-      Caffeinate::UrlHelpers.caffeinate_unsubscribe_url(@campaign_subscription, options)
+      Caffeinate::UrlHelpers.caffeinate_unsubscribe_url(@campaign_subscription, **options)
     end
 
     def find_campaign_subscription!
