@@ -1,6 +1,23 @@
+
 # Changelog
 
 Important additions/changes/removals will appear here.
+
+## v2.1.0 (January 14, 2023)
+
+### Fixed
+* Ruby 3 bug 
+
+### Added
+* Support for rescuing from an error during delivery:
+
+    ```
+    class MyDripper < Caffeinate::Dripper::Base
+      rescue_from Postmark::SomeError do |mailing|
+        mailing.caffeinate_campaign_subscription.end! 
+      end
+    end 
+    ```
 
 ## v2.0.1 (September 11, 2021)
 
