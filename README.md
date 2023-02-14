@@ -20,7 +20,7 @@ Caffeinate is a drip email engine for managing, creating, and sending scheduled 
 
 Caffeinate provides a simple DSL to create scheduled email sequences which can be used by ActionMailer without any additional configuration. 
 
-There's a cool demo with all the things included at [caffeinate.email](https://caffeinate.email). You can view the [marketing site source code here](https://github.com/joshmn/caffeinate-marketing).
+There's a cool demo app you can spin up [here](https://github.com/joshmn/caffeinate-marketing).
 
 ## Is this thing dead?
 
