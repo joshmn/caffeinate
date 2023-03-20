@@ -32,6 +32,14 @@ module Caffeinate
 
     after_touch :end_if_no_mailings!
 
+    def self.find_or_initialize_from_drip(campaign_subscription, drip)
+      find_or_initialize_by(
+        caffeinate_campaign_subscription: campaign_subscription,
+        mailer_class: drip.options[:mailer_class],
+        mailer_action: drip.action
+      )
+    end
+
     def initialize_dup(args)
       super
       self.send_at = nil

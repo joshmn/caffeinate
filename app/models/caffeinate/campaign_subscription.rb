@@ -16,6 +16,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
+
 module Caffeinate
   # If a record tries to be `unsubscribed!` or `ended!` or `resubscribe!` and it's in a state that is not
   # correct, raise this
@@ -58,6 +59,22 @@ module Caffeinate
     after_create :create_mailings!
 
     after_commit :on_complete, if: :completed?
+
+    # Add (new) drips to a `CampaignSubscriber`.
+    #
+    # Useful if you added new drips to a `Campaign` and have existing `CampaignSubscription`
+    # which you want to add them to.
+    #
+    # Pass `:created_at` if you want to offset `Mailing#send_at` time from the time the `CampaignSubscription`
+    # was originally created. That is to say that if you add a new drip for 5 days from now, the mailing will be sent
+    # 5 days from when the `CampaignSubscription` was created.
+    #
+    # Pass `:current` to offset from the current time (doesn't offset anything, actually)
+    def refuel!(offset: :created_at)
+      ::CampaignSubscriptions::RefuelService.new(self, offset: offset).call
+
+      true
+    end
 
     # Actually deliver and process the mail
     def deliver!(mailing)

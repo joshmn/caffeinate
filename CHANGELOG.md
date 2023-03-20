@@ -3,18 +3,34 @@
 
 Important additions/changes/removals will appear here.
 
+## v2.2.0 (March 20, 2023)
+
+### Fixed
+* Documentation about `rescue_from` in a `Dripper`. 
+
+### Added
+
+* Ability to add new mailings to a campaign using `CampaignSubscription#refuel!`
+    
+    - Someone had mentioned that:
+    > [Caffeinate] appear to allow you to edit Campaigns for people currently subscribed (e.g. adding more emails to an onboarding campaign)
+  
+    Now ya can! Just call `refuel!` on an instance of a `CampaignSubscription` and it will only create new mailings. 
+
+  
 ## v2.1.0 (January 14, 2023)
 
 ### Fixed
 * Ruby 3 bug 
 
 ### Added
+
 * Support for rescuing from an error during delivery:
 
     ```
     class MyDripper < Caffeinate::Dripper::Base
-      rescue_from Postmark::SomeError do |mailing|
-        mailing.caffeinate_campaign_subscription.end! 
+      rescue_from Postmark::SomeError do |exception|
+        caffeinate_campaign_subscription.end! 
       end
     end 
     ```

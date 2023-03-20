@@ -20,7 +20,7 @@ jobs:
             ${{ runner.os }}-gems-
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6
+          ruby-version: 2.7.2
       - name: Bundle
         run: |
           gem install bundler -v 2.1.3

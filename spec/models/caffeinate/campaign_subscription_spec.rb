@@ -25,6 +25,14 @@ describe Caffeinate::CampaignSubscription do
       expect(subscription.next_mailing).to be_nil
     end
   end
+
+  describe '#refuel!' do
+    it 'invokes the RefuelService' do
+      expect_any_instance_of(::CampaignSubscriptions::RefuelService).to receive(:call)
+      subscription.refuel!
+    end
+  end
+
   describe '#end!' do
     context 'without argument' do
       it 'is not ended' do
