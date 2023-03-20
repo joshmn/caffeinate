@@ -11,16 +11,10 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.7.2
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Bundle
         run: |
           gem install bundler -v 2.1.3
