@@ -94,7 +94,7 @@ end
 
 ```ruby
 class OnboardingWorker
-  include SidekiqWorker
+  include Sidekiq::Worker
   
   def perform(action, user_id)
     user = User.find(user_id)
