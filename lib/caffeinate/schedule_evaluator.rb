@@ -33,10 +33,6 @@ module Caffeinate
     # todo: test this decision tree.
     def call
       if periodical?
-        # start = mailing.instance_exec(&options[:start])
-        # start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count.positive?
-        # date = start.from_now
-
         date = if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count.positive?
           if options[:every].respond_to? :call
             mailing.instance_exec(&options[:every])
