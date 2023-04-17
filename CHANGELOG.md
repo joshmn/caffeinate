@@ -3,13 +3,20 @@
 
 Important additions/changes/removals will appear here.
 
+## v2.3.0 (April 17, 2023)
+
+### Changed
+* A `Drip` now accepts an `action_class` option, in addition to the previous options
+
+### Added
+* Ability to use normal Ruby classes, not just ActionMailer
+
 ## v2.2.0 (March 20, 2023)
 
 ### Fixed
-* Documentation about `rescue_from` in a `Dripper`. 
+* Documentation about `rescue_from` in a `Dripper` 
 
 ### Added
-
 * Ability to add new mailings to a campaign using `CampaignSubscription#refuel!`
     
     - Someone had mentioned that:
@@ -24,7 +31,6 @@ Important additions/changes/removals will appear here.
 * Ruby 3 bug 
 
 ### Added
-
 * Support for rescuing from an error during delivery:
 
     ```

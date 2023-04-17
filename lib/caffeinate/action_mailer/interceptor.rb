@@ -13,10 +13,6 @@ module Caffeinate
         drip = mailing.drip
         message.perform_deliveries = drip.enabled?(mailing)
       end
-
-      def self.delivering_message(message)
-        delivering_email(message)
-      end
     end
   end
 end
