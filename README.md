@@ -107,7 +107,7 @@ class User
     send_twilio_message("Welcome to our app!")
   end
 
-  def some_cool_tips(user)
+  def some_cool_tips
     return if self.unsubscribed_from_onboarding_campaign?
 
     send_twilio_message("Here are some cool tips for MyCoolApp")
