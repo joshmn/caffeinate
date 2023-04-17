@@ -26,6 +26,10 @@ module Caffeinate
       ::Caffeinate::ScheduleEvaluator.call(self, mailing)
     end
 
+    def past_until?(mailing)
+      ::Caffeinate::UntilEvaluator.call(self, mailing)
+    end
+
     # Checks if the drip is enabled
     #
     # This is kind of messy and could use some love.

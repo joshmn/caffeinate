@@ -13,9 +13,12 @@ describe ::Caffeinate::DeliverAsync do
   describe '#perform' do
     it 'delivers a pending mail' do
       campaign.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
+      Timecop.travel(1.minute.from_now)
+
       expect(subscription.caffeinate_mailings.count).to eq(1)
       mailing = subscription.next_caffeinate_mailing
       expect(mailing).to be_pending
+
       DeliverAsyncTest.new.perform(mailing.id)
       mailing.reload
       expect(mailing).not_to be_pending

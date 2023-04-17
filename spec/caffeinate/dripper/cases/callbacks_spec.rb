@@ -88,6 +88,7 @@ describe ::Caffeinate::Dripper::Callbacks do
   describe '.on_process' do
     before do
       dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
+      Timecop.travel(1.minute.from_now)
       company = create(:company)
       campaign.subscribe(company)
       dripper.cattr_accessor :on_performing
