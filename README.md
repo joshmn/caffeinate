@@ -16,15 +16,15 @@
 
 # Caffeinate
 
-Caffeinate is a drip engine for managing, creating, and sending scheduled messages sequences from your Ruby on Rails application. This was originally meant for email, but now supports anything!
+Caffeinate is a drip engine for managing, creating, and performing scheduled messages sequences from your Ruby on Rails application. This was originally meant for email, but now supports anything!
 
-Caffeinate provides a simple DSL to create scheduled sequences which can be used by ActionMailer, or any Ruby object, without any additional configuration. 
+Caffeinate provides a simple DSL to create scheduled sequences which can be sent by ActionMailer, or invoked by a Ruby object, without any additional configuration. 
 
 There's a cool demo app you can spin up [here](https://github.com/joshmn/caffeinate-marketing).
 
 ## Now supports POROs!
 
-Originally, this was meant for just email, but now supports plain old Ruby objects just as well. Having said, the documentation primarily revolves around using ActionMailer, but it's just as easy to plug in a PORO. See `Using Without ActionMailer` below.
+Originally, this was meant for just email, but as of V2.3 supports plain old Ruby objects just as well. Having said, the documentation primarily revolves around using ActionMailer, but it's just as easy to plug in any Ruby class. See `Using Without ActionMailer` below.
 
 ## Is this thing dead?
 
@@ -242,6 +242,7 @@ Now supports POROs <sup>that inherit from a magical class</sup>! Using the examp
 
 Caffeinate also...
 
+* ✅ Works with regular Ruby methods as of V2.3
 * ✅ Allows hyper-precise scheduled times. 9:19AM _in the user's timezone_? Sure! **Only on business days**? YES! 
 * ✅ Periodicals
 * ✅ Manages unsubscribes
