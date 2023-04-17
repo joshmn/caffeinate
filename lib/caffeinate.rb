@@ -14,6 +14,7 @@ end
 require 'caffeinate/mail_ext'
 require 'caffeinate/engine'
 require 'caffeinate/drip'
+require 'caffeinate/action'
 require 'caffeinate/url_helpers'
 require 'caffeinate/configuration'
 require 'caffeinate/dripper/base'

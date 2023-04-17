@@ -16,11 +16,15 @@
 
 # Caffeinate
 
-Caffeinate is a drip email engine for managing, creating, and sending scheduled email sequences from your Ruby on Rails application.
+Caffeinate is a drip engine for managing, creating, and sending scheduled messages sequences from your Ruby on Rails application. This was originally meant for email, but now supports anything!
 
-Caffeinate provides a simple DSL to create scheduled email sequences which can be used by ActionMailer without any additional configuration. 
+Caffeinate provides a simple DSL to create scheduled sequences which can be used by ActionMailer, or any Ruby object, without any additional configuration. 
 
 There's a cool demo app you can spin up [here](https://github.com/joshmn/caffeinate-marketing).
+
+## Now supports POROs!
+
+Originally, this was meant for just email, but now supports plain old Ruby objects just as well. Having said, the documentation primarily revolves around using ActionMailer, but it's just as easy to plug in a PORO. See `Using Without ActionMailer` below.
 
 ## Is this thing dead?
 
@@ -74,6 +78,66 @@ end
 * It's going to be _so fun_ to scale when you finally want to add more unsubscribe links for different types of sequences
     - "one of your projects has expired", but which one? Then you have to add a column to `projects` and manage all that state... ew
 
+## Perhaps you suffer from enqueued worker madness
+
+If you have _anything_ like this is your codebase, **you need Caffeinate**:
+
+```ruby
+class User < ApplicationRecord
+  after_commit on: :create do
+    OnboardingWorker.perform_later(:welcome, self.id)
+    OnboardingWorker.perform_in(2.days, :some_cool_tips, self.id)
+    OnboardingWorker.perform_later(3.days, :help_getting_started, self.id)
+  end
+end
+```
+
+```ruby
+class OnboardingWorker
+  include SidekiqWorker
+  
+  def perform(action, user_id)
+    user = User.find(user_id)
+    user.public_send(action)
+  end
+end
+
+class User
+  def welcome
+    send_twilio_message("Welcome to our app!")
+  end
+
+  def some_cool_tips(user)
+    return if self.unsubscribed_from_onboarding_campaign?
+
+    send_twilio_message("Here are some cool tips for MyCoolApp")
+  end
+
+  def help_getting_started
+    return if unsubscribed_from_onboarding_campaign?
+    return if onboarding_completed?
+
+    send_twilio_message("Do you need help getting started?")
+  end
+  
+  private 
+  
+  def send_twilio_message(message)
+    twilio_client.messages.create(
+            body: message,
+            to: "+12345678901",
+            from: "+15005550006",
+    )
+  end
+  
+  def twilio_client
+    @twilio_client ||= Twilio::REST::Client.new Rails.application.credentials.twilio[:account_sid], Rails.application.credentials.twilio[:auth_token]
+  end
+end
+```
+
+I don't even need to tell you why this is smelly!
+
 ## Do this all better in five minutes
 
 In five minutes you can implement this onboarding campaign:
@@ -88,9 +152,9 @@ $ rails g caffeinate:install
 $ rake db:migrate
 ```
 
-### Clean up the mailer logic
+### Clean up the business logic
 
-Mailers should be responsible for receiving context and creating a `mail` object. Nothing more.
+Assuming you intend to use Caffeinate to handle emails using ActionMailer, mailers should be responsible for receiving context and creating a `mail` object. Nothing more. (If you are looking for examples that don't use ActionMailer, see [Without ActionMailer](docs/6-without-action-mailer.md).)
 
 The only other change you need to make is the argument that the mailer action receives. It will now receive a `Caffeinate::Mailing`. [Learn more about the data models](docs/2-data-models.md):
 
@@ -169,6 +233,10 @@ You're done.
 
 [Check out the docs](/docs/README.md) for a more in-depth guide that includes all the options you can use for more complex setups,
 tips, tricks, and shortcuts.
+
+## Using Without ActionMailer
+
+Now supports POROs <sup>that inherit from a magical class</sup>! Using the example above, implementing an SMS client. The same rules apply, just change `mailer_class` or `mailer` to `action_class`, and create a `Caffeinate::Action` (acts just like an `ActionMailer`). See [Without ActionMailer](docs/6-without-action-mailer.md).) for more.
 
 ## But wait, there's more
 
