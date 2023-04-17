@@ -52,7 +52,18 @@ describe ::Caffeinate::Dripper::Perform do
 
   describe 'action classes' do
     class TestActionClass < Caffeinate::Action
+      class FakeDelivery
+        def initialize
+
+        end
+
+        def deliver!(thing)
+
+        end
+      end
+
       def welcome(mailing)
+        FakeDelivery.new
       end
     end
 

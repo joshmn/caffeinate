@@ -12,9 +12,22 @@ module Caffeinate
   #   end
   #
   # In the future (when?), "mailing" objects will become "messages".
+  #
+  # Optionally, you can use the method for setup and return an object that implements `#deliver!`
+  # and that will be invoked.
   class Action
     attr_accessor :caffeinate_mailing
     attr_accessor :perform_deliveries
+
+    class DeliveryMethod
+      def deliver!(action)
+        # implement this if you want to
+      end
+    end
+
+    def initialize
+      @delivery_method = DeliveryMethod.new
+    end
 
     class << self
       def action_methods
@@ -55,13 +68,38 @@ module Caffeinate
     def process(action_name, mailing)
       @action_name = action_name
       self.caffeinate_mailing = mailing
+    end
+
+    # Follows Mail::Message
+    def deliver
+      inform_interceptors
+      do_delivery
+      inform_observers
+      self
+    end
+
+    private
+
+    def inform_interceptors
       ::Caffeinate::ActionMailer::Interceptor.delivering_email(self)
     end
 
-    def deliver
-      if self.perform_deliveries
-        send(@action_name, caffeinate_mailing)
-        ::Caffeinate::ActionMailer::Observer.delivered_email(self)
+    def inform_observers
+      ::Caffeinate::ActionMailer::Observer.delivered_email(self)
+    end
+
+    # In your action's method (@action_name), if you return an object that responds to `deliver!`
+    # we'll invoke it. This is useful for doing setup in the method and then firing it later.
+    def do_delivery
+      begin
+        if perform_deliveries
+          handled = send(@action_name, caffeinate_mailing)
+          if handled.respond_to?(:deliver!) && !handled.is_a?(Caffeinate::Mailing)
+            handled.deliver!(self)
+          end
+        end
+      rescue => e
+        raise e
       end
     end
   end
