@@ -145,3 +145,44 @@ end
 Done! Everything is handled the same as it would be otherwise. Caffeinate will still mark them as sent after this action completes successfully.
 
 If you need to bail, raise an error.
+
+## Using the actions as setup
+
+If you return an object that implements `#deliver!`, it will be called. Here's an example:
+
+```ruby
+class PostAPIDeliver
+  def initialize(to:, content:)
+    @to = to 
+    @content = content 
+  end
+  
+  def deliver!(_action)
+    HTTParty.post # ...
+  end
+end
+
+class OnboardingAction < ActionMailer::Base
+  def welcome_to_my_cool_app(mailing)
+    @user = mailing.subscriber
+    post_to_api(to: @user.phone_number, content: "Welcome to CoolApp!")
+  end
+
+  def some_cool_tips(mailing)
+    @user = mailing.subscriber
+    post_to_api(to: @user.phone_number, content: "Here are some cool tips for MyCoolApp")
+  end
+
+  def help_getting_started(mailing)
+    @user = mailing.subscriber
+    post_to_api(to: @user.phone_number, content: "Do you need help getting started?")
+  end
+  
+  private 
+  
+  def post_to_api(to:, content:)
+    PostAPIDeliver.new(to: to, content: content)
+  end
+end
+```
+

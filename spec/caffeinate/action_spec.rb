@@ -79,5 +79,4 @@ describe Caffeinate::Action do
       CoolOneOffAction.return_custom_thing(mailing).deliver
     end
   end
-
 end
