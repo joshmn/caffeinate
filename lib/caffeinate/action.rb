@@ -4,7 +4,7 @@ module Caffeinate
   # Allows you to use a PORO for a drip; acts just like ActionMailer::Base
   #
   # Usage:
-  #   class TextHandler < Caffeinate::Action
+  #   class TextAction < Caffeinate::Action
   #     def welcome(mailing)
   #       user = mailing.subscriber
   #       HTTParty.post("...") # ...
@@ -15,6 +15,27 @@ module Caffeinate
   #
   # Optionally, you can use the method for setup and return an object that implements `#deliver!`
   # and that will be invoked.
+  #
+  # usage:
+  #
+  #   class TextAction < Caffeinate::Action
+  #     class Envelope(user)
+  #       @sms = SMS.new(to: user.phone_number)
+  #     end
+  #
+  #     def deliver!(action)
+  #       # action will be the instantiated TextAction object
+  #       # and you can access action.action_name, etc.
+  #
+  #       erb = ERB.new(File.read(Rails.root + "app/views/cool_one_off_action/#{action_object.action_name}.text.erb"))
+  #       # ...
+  #       @sms.send!
+  #     end
+  #
+  #     def welcome(mailing)
+  #       Envelope.new(mailing.subscriber)
+  #     end
+  #   end
   class Action
     attr_accessor :caffeinate_mailing
     attr_accessor :perform_deliveries
