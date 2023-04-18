@@ -1,11 +1,14 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
+#!/usr/bin/env bash
 
-require_relative '../lib/caffeinate/version'
+VERSION=$1
 
-version = Caffeinate::VERSION
-system('gem build caffeinate.gemspec')
-system("gem push caffeinate-#{version}.gem")
-system("rm caffeinate-#{version}.gem")
-system("git tag -a v#{version} -m 'version #{version}'")
-system("git push origin v#{version}")
+printf "module Caffeinate\n  VERSION = \"$VERSION\"\nend\n" > ./lib/caffeinate/version.rb
+bundle
+git add Gemfile.lock lib/caffeinate/version.rb
+git commit -m "Bump version for $VERSION"
+git push
+git tag v$VERSION
+git push --tags
+gem build caffeinate.gemspec
+gem push "caffeinate-$VERSION.gem" --host https://rubygems.org
+rm "caffeinate-$VERSION.gem"

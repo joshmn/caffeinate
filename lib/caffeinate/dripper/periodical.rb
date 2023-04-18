@@ -11,7 +11,8 @@ module Caffeinate
         def periodical(action_name, every:, start: -> { ::Caffeinate.config.time_now }, **options, &block)
           options[:start] = start
           options[:every] = every
-          drip(action_name, options, &block)
+          periodical_drip(action_name, **options, &block)
+
           after_send do |mailing, _message|
             if mailing.drip.action == action_name
               next_mailing = mailing.dup

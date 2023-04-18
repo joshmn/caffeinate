@@ -98,6 +98,24 @@ describe Caffeinate::Drip do
     it 'uses the method' do
       expect(SomeFakeDripper.drip_collection.for(:action_name).send_at).to eq(2.years.from_now.beginning_of_year)
     end
+  end
 
+  describe '.build' do
+    context '#validate_drip_options' do
+      let(:error) {
+        begin
+          ::Caffeinate::Drip.build(SomeFakeDripper, :name, { mailer_class: 'Test' })
+        rescue StandardError => e
+          e
+        end
+      }
+      it 'raises ArgumentError if invalid' do
+        expect(error.class).to eq(ArgumentError)
+      end
+
+      it 'message contains delay' do
+        expect(error.message).to include(':delay')
+      end
+    end
   end
 end
