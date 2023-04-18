@@ -103,4 +103,21 @@ describe Caffeinate::Action do
       expect { CoolOneOffAction.return_mailing(mailing).deliver }.to change(mailing, :sent_at)
     end
   end
+
+  context 'when an action returns an envelope that raises an error' do
+    subject do
+      allow_any_instance_of(CoolOneOffAction::Envelope).to receive(:deliver!).and_raise(StandardError)
+      CoolOneOffAction.return_custom_thing(mailing).deliver
+    end
+
+    it 'raises the error' do
+      expect { subject }.to raise_error(StandardError)
+    end
+
+    it 'does not change the mail' do
+
+
+      expect { subject rescue StandardError }.to_not change(mailing, :sent_at)
+    end
+  end
 end

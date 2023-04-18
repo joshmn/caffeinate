@@ -100,6 +100,22 @@ module Caffeinate
       self
     end
 
+    # This method bypasses checking perform_deliveries and raise_delivery_errors,
+    # so use with caution.
+    #
+    # It still however fires off the interceptors and calls the observers callbacks if they are defined.
+    #
+    # Returns self
+    def deliver!
+      inform_interceptors
+      handled = send(@action_name, caffeinate_mailing)
+      if handled.respond_to?(:deliver!) && !handled.is_a?(Caffeinate::Mailing)
+        handled.deliver!(self)
+      end
+      inform_observers
+      self
+    end
+
     private
 
     def inform_interceptors
