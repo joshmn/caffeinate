@@ -18,6 +18,7 @@ module Caffeinate
   class Action
     attr_accessor :caffeinate_mailing
     attr_accessor :perform_deliveries
+    attr_reader :action_name
 
     class DeliveryMethod
       def deliver!(action)

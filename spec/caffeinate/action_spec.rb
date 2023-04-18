@@ -10,23 +10,32 @@ describe Caffeinate::Action do
       mailing
     end
 
-    class ImplementsDelivery
-      def initialize
-
+    class Envelope
+      def initialize(user)
+        @user = user
       end
 
-      def deliver!(mailing)
+      def deliver!(action_object)
+        # ERB.new(File.read(Rails.root + "app/views/cool_one_off_action/#{action_object.action_name}.html.erb"))
+        #
       end
     end
 
     def return_custom_thing(mailing)
-      ImplementsDelivery.new
+      Envelope.new(mailing.subscriber)
     end
   end
 
   let!(:campaign) { create(:caffeinate_campaign, :with_dripper) }
+
+  before do
+    # name doesn't matter here since we're invoking things directly
+    # we just want the mailing to exist
+    campaign.to_dripper.drip :hello, action_class: 'CoolOneOffAction', delay: 0.hours
+  end
+
   let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
-  let(:mailing) { subscription.mailings.first }
+  let(:mailing) { subscription.caffeinate_mailings.first }
 
   context '#process' do
     subject do
@@ -36,11 +45,15 @@ describe Caffeinate::Action do
     end
 
     it 'sets the @action_name' do
-      expect(subject.instance_variable_get(:@action_name)).to eq(:welcome)
+      expect(subject.action_name).to eq(:welcome)
     end
 
     it 'sets the #caffeinate_mailing' do
       expect(subject.caffeinate_mailing).to eq(mailing)
+    end
+
+    it 'sets has a Caffeinate::Mailing' do
+      expect(subject.caffeinate_mailing).to be_a(Caffeinate::Mailing)
     end
   end
 
@@ -63,20 +76,31 @@ describe Caffeinate::Action do
       expect_any_instance_of(described_class).to receive(:do_delivery)
       subject
     end
+
+    it 'marks the mailing as sent' do
+      expect { subject }.to change(mailing, :sent_at)
+    end
   end
 
   context 'when an action returns an object that responds to #deliver!' do
-
-    before do
-      campaign.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
+    it 'calls it' do
+      expect_any_instance_of(CoolOneOffAction::Envelope).to receive(:deliver!).with(an_instance_of(CoolOneOffAction)).and_call_original
+      CoolOneOffAction.return_custom_thing(mailing).deliver
     end
 
-    let(:mailing) { subscription.caffeinate_mailings.first }
-    let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
+    it 'marks mailing as sent' do
+      expect { CoolOneOffAction.return_custom_thing(mailing).deliver }.to change(mailing, :sent_at)
+    end
+  end
 
-    it 'calls it' do
-      expect_any_instance_of(CoolOneOffAction::ImplementsDelivery).to receive(:deliver!)
-      CoolOneOffAction.return_custom_thing(mailing).deliver
+  context 'when an action returns a mailing' do
+    it 'does not hit its deliver!' do
+      expect(mailing).to_not receive(:deliver!)
+      CoolOneOffAction.return_mailing(mailing).deliver
+    end
+
+    it 'marks mailing as sent' do
+      expect { CoolOneOffAction.return_mailing(mailing).deliver }.to change(mailing, :sent_at)
     end
   end
 end
