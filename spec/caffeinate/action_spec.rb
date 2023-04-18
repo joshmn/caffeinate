@@ -115,8 +115,6 @@ describe Caffeinate::Action do
     end
 
     it 'does not change the mail' do
-
-
       expect { subject rescue StandardError }.to_not change(mailing, :sent_at)
     end
   end
