@@ -17,15 +17,11 @@
 require 'rails_helper'
 
 describe ::Caffeinate::Mailing do
-  let!(:campaign) { create(:caffeinate_campaign, slug: :caffeinate_active_record_extension) }
+  let!(:campaign) { create(:caffeinate_campaign, :with_dripper, slug: :caffeinate_active_record_extension) }
   let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
   let!(:unsent_mailings) { create_list(:caffeinate_mailing, 5, :unsent, caffeinate_campaign_subscription: subscription) }
   let!(:sent_mailings) { create_list(:caffeinate_mailing, 3, :sent, caffeinate_campaign_subscription: subscription) }
   let!(:skipped_mailings) { create_list(:caffeinate_mailing, 2, :skipped, caffeinate_campaign_subscription: subscription) }
-
-  class CaffeinateMailingTestCampaign < ::Caffeinate::Dripper::Base
-    self.campaign = :caffeinate_active_record_extension
-  end
 
   describe '#unsent' do
     it 'has 5 unsent mailings' do
@@ -103,12 +99,10 @@ describe ::Caffeinate::Mailing do
     end
 
     describe '#process!' do
-      class SkippedMailingDripper < ::Caffeinate::Dripper::Base
-        self.campaign = :skipped_mailing
-        drip :happy, mailer_class: 'SkippedMailingMailer', delay: 0.hours, using: :parameterized
+      let!(:mailing_campaign) { create(:caffeinate_campaign, :with_dripper, slug: :skipped_mailing) }
+      before do
+        mailing_campaign.to_dripper.drip :happy, mailer_class: 'SkippedMailingMailer', delay: 0.hours, using: :parameterized
       end
-
-      let!(:mailing_campaign) { create(:caffeinate_campaign, slug: :skipped_mailing) }
       let!(:skipped_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: mailing_campaign) }
 
       class SkippedMailingMailer < ActionMailer::Base
