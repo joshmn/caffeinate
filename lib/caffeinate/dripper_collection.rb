@@ -2,6 +2,8 @@
 
 module Caffeinate
   class DripperCollection
+    delegate :each, to: :@registry
+
     def initialize
       @registry = {}
     end
