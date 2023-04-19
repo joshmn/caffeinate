@@ -76,10 +76,11 @@ module Caffeinate
       false
     end
 
+    # allows for hitting type.periodical? or type.drip?
     def type
-      name = self.class.name.delete_suffix("Drip").presence || "Drip"
+      name = self.class.name.demodulize.delete_suffix("Drip").presence || "Drip"
 
-      ActiveSupport::StringInquirer.new(name)
+      ActiveSupport::StringInquirer.new(name.downcase)
     end
   end
 end

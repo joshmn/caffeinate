@@ -33,16 +33,17 @@ module Caffeinate
     # todo: test this decision tree.
     def call
       if periodical?
-        start = mailing.instance_exec(&options[:start])
-        start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count.positive?
-        date = start.from_now
+        start = OptionEvaluator.new(options[:start], self, mailing).call
+        start += OptionEvaluator.new(options[:every], self, mailing).call if mailing.caffeinate_campaign_subscription.caffeinate_mailings.size.positive?
+        date = start
       elsif options[:on]
         date = OptionEvaluator.new(options[:on], self, mailing).call
       else
         date = OptionEvaluator.new(options[:delay], self, mailing).call
-        if date.respond_to?(:from_now)
-          date = date.from_now
-        end
+      end
+
+      if date.respond_to?(:from_now)
+        date = date.from_now
       end
 
       if options[:at]
@@ -52,7 +53,7 @@ module Caffeinate
 
       date
     end
-    
+
     def respond_to_missing?(name, include_private = false)
       @drip.respond_to?(name, include_private)
     end
@@ -60,11 +61,11 @@ module Caffeinate
     def method_missing(method, *args, &block)
       @drip.send(method, *args, &block)
     end
-    
+
     private
 
     def periodical?
-      options[:every].present?
+      @drip.type.periodical?
     end
   end
 end

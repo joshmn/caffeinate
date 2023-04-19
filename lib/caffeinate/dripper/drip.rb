@@ -52,18 +52,16 @@ module Caffeinate
 
         # Register a Periodical drip on the Dripper
         #
-        #   periodical_drip :mailer_action_name, mailer_class: "MailerClass", until: :something, every: 2.hours
+        #   periodical :pay_your_invoice, every: 1.day, start: 0.hours, if: :invoice_unpaid?
         #
         # @param action_name [Symbol] the name of the mailer action
         # @param [Hash] options the options to create a drip with
         # @option options [String] :mailer_class The mailer_class
-        # @option options [Integer] :step The order in which the drip is executed
-        # @option options [ActiveSupport::Duration] :delay When the drip should be ran
-        # @option options [Block|Symbol|String] :at Alternative to `:delay` option, allowing for more fine-tuned timing.
-        # Accepts a block, symbol (an instance method on the Dripper that accepts two arguments: drip, mailing), or a string
-        # to be later parsed into a Time object.
+        # @option options [Symbol|Proc|ActiveSupport::Duration] :every How often the mailing should be created
+        # @option options [Symbol|Proc] :if If the periodical should create another mailing
+        # @option options [Symbol|Proc] :start The offset time to start the clock (only used on the first mailing creation)
         #
-        #   drip :mailer_action_name, mailer_class: "MailerClass", at: -> { 3.days.from_now.in_time_zone(mailing.subscriber.timezone) }
+        #   periodical :pay_your_invoice, mailer_class: "InvoiceReminderMailer", if: :invoice_unpaid?
         #
         #   class MyDripper
         #     drip :mailer_action_name, mailer_class: "MailerClass", at: :generate_date
