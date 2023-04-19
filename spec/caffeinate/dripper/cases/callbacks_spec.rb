@@ -70,17 +70,10 @@ describe ::Caffeinate::Dripper::Callbacks do
     context 'yields' do
       before do
         dripper.before_perform do |*args|
-          dripper.before_performing = args
         end
+        expect_any_instance_of(dripper).to receive(:run_callbacks).with(:before_perform, an_instance_of(dripper)).and_call_original
+        expect_any_instance_of(dripper).to receive(:run_callbacks).with(:after_perform, an_instance_of(dripper)).and_call_original
         dripper.perform!
-      end
-
-      it 'yields 1 arg' do
-        expect(dripper.before_performing.size).to be(1)
-      end
-
-      it 'first arg is the dripper' do
-        expect(dripper.before_performing[0]).to be_a(dripper)
       end
     end
   end

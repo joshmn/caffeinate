@@ -5,11 +5,7 @@ require 'rails_helper'
 describe Caffeinate::CampaignSubscriptionsController, type: :controller do
   render_views
   routes { Caffeinate::Engine.routes }
-  let!(:campaign) { create(:caffeinate_campaign, slug: 'campaign_subscriptions_controller_test') }
-
-  class CampaignControllerTestDripper < ::Caffeinate::Dripper::Base
-    self.campaign = :campaign_subscriptions_controller_test
-  end
+  let!(:campaign) { create(:caffeinate_campaign, :with_dripper, slug: 'campaign_subscriptions_controller_test') }
 
   context 'a valid token' do
     it 'subscribes if subscribed' do
