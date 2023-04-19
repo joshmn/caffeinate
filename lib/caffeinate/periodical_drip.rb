@@ -24,6 +24,10 @@ module Caffeinate
         options[:using] ||= dripper.defaults[:using]
         options[:step] ||= dripper.drips.size + 1
 
+        unless options.key?(:every)
+          raise "Periodical drips must have an `every` option."
+        end
+
         options
       end
     end

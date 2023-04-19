@@ -33,7 +33,10 @@ module Caffeinate
     # todo: test this decision tree.
     def call
       if periodical?
-        start = OptionEvaluator.new(options[:start], self, mailing).call
+        start = Caffeinate.config.now.call
+        if options[:start]
+          start = OptionEvaluator.new(options[:start], self, mailing).call
+        end
         start += OptionEvaluator.new(options[:every], self, mailing).call if mailing.caffeinate_campaign_subscription.caffeinate_mailings.size.positive?
         date = start
       elsif options[:on]

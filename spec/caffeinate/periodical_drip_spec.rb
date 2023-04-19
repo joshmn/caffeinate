@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe Caffeinate::PeriodicalDrip do
+  let!(:campaign) { create(:caffeinate_campaign, :with_dripper) }
+
   describe 'options' do
     class SomeFakePeriodicalDripper < ::Caffeinate::Dripper::Base
       default mailer_class: "TestMailer"
@@ -17,7 +19,6 @@ describe Caffeinate::PeriodicalDrip do
   end
 
   context 'perform' do
-    let!(:campaign) { create(:caffeinate_campaign, :with_dripper) }
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
     before do
@@ -37,7 +38,10 @@ describe Caffeinate::PeriodicalDrip do
     end
   end
 
-  context 'validations' do
-
+  context 'every' do
+    it 'is an error if it is not present' do
+      expect { campaign.to_dripper.periodical :hello, mailer_class: "ArgumentMailer" }.to raise_error
+    end
   end
+
 end
