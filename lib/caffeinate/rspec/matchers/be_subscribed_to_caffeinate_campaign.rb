@@ -24,9 +24,15 @@ module Caffeinate
           "expected #{@hopeful_subscriber.inspect} to be subscribed to the \"Campaign##{@expected_campaign.slug}\" campaign but wasn't"
         end
 
+        def with(**args)
+          @args = args
+          self
+        end
+
         def matches?(hopeful_subscriber)
           @hopeful_subscriber = hopeful_subscriber
-          @expected_campaign.caffeinate_campaign_subscriptions.exists?(subscriber: hopeful_subscriber)
+          @args ||= {}
+          @expected_campaign.caffeinate_campaign_subscriptions.exists?(subscriber: hopeful_subscriber, **@args)
         end
 
         def failure_message_when_negated

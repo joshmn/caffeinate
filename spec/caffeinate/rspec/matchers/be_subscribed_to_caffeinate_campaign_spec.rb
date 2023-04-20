@@ -8,8 +8,19 @@ RSpec.describe Caffeinate::RSpec::Matchers::BeSubscribedToCaffeinateCampaign do
 
   describe 'expected usage' do
     subject { campaign.subscribe(user) }
+
     it 'matches' do
       expect(subject.subscriber).to be_subscribed_to_caffeinate_campaign campaign
+    end
+
+    context 'with' do
+      let(:company) { create(:company) }
+
+      subject { campaign.subscribe(company, user: user) }
+
+      it 'matches' do
+        expect(subject.subscriber).to be_subscribed_to_caffeinate_campaign(campaign).with(user: user)
+      end
     end
   end
 

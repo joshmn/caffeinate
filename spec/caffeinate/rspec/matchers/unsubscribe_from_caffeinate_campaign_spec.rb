@@ -16,7 +16,7 @@ RSpec.describe Caffeinate::RSpec::Matchers::UnsubscribeFromCaffeinateCampaign do
     end
   end
 
-  describe '#subscribe_to_caffeinate_campaign' do
+  describe '#unsubscribe_from_caffeinate_campaign' do
     it 'returns instance' do
       expect(unsubscribe_from_caffeinate_campaign(campaign, company, user: user)).to be_a Caffeinate::RSpec::Matchers::UnsubscribeFromCaffeinateCampaign
     end
