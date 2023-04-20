@@ -3,6 +3,11 @@
 
 Important additions/changes/removals will appear here.
 
+## Master (April 20, 2023)
+
+### Added 
+* RSpec matchers 
+
 ## v2.2.0 (March 20, 2023)
 
 ### Fixed
