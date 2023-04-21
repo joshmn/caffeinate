@@ -19,7 +19,7 @@ describe Caffeinate::ScheduleEvaluator do
     let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
 
     it 'succeeds' do
-      expect(sub.caffeinate_mailings.first.send_at).to eq 3.days.from_now
+      expect(sub.caffeinate_mailings.first.send_at.to_i).to eq 3.days.from_now.to_i
     end
   end
 
