@@ -223,9 +223,13 @@ end
 
 ### Run the Dripper
 
+You'll usually do this in a scheduled background job or cron.
+
 ```ruby
 OnboardingDripper.perform!
 ```
+
+Alternatively, you can run all of the registered drippers with `Caffeinate.perform!`.
 
 ### Done
 

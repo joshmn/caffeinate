@@ -1,0 +1,1 @@
+require 'caffeinate/rspec/matchers'

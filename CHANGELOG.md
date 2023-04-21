@@ -3,13 +3,15 @@
 
 Important additions/changes/removals will appear here.
 
-## v2.3.0 (April 17, 2023)
+
+## Master (April 20, 2023)
+
+### Added 
+* RSpec matchers 
+* Ability to use normal Ruby classes, not just ActionMailer
 
 ### Changed
 * A `Drip` now accepts an `action_class` option, in addition to the previous options
-
-### Added
-* Ability to use normal Ruby classes, not just ActionMailer
 
 ## v2.2.0 (March 20, 2023)
 

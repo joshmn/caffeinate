@@ -36,6 +36,10 @@ module Caffeinate
     # The default reason for an unsubscribed `Caffeinate::CampaignSubscription`
     attr_accessor :default_unsubscribe_reason
 
+    # An array of Drippers that are enabled. Only used if you use Caffeinate.perform in
+    # your worker instead of calling separate drippers. If nil, will run all the campaigns.
+    attr_accessor :enabled_drippers
+
     def initialize
       @now = -> { Time.current }
       @async_delivery = false
@@ -46,6 +50,7 @@ module Caffeinate
       @implicit_campaigns = true
       @default_ended_reason = nil
       @default_unsubscribe_reason = nil
+      @enabled_drippers = nil
     end
 
     def now=(val)

@@ -165,6 +165,14 @@ Call `perform!` on the dripper. You'll probably do this in a background job and 
 AbandonedCartDripper.perform!
 ```
 
+You can also run all the drippers:
+
+```ruby
+Caffeinate.perform! 
+```
+
+And make changes to the set of drippers that automatically run in this action in the configuration under `#enabled_drippers`.
+
 This looks at `Caffeinate::Mailing` records where `send_at` has past, `skipped_at` is nil, and the associated 
 `Caffeinate::CampaignSubscription` is has empty `ended_at` and `unsubscribed_at` values.
 
