@@ -65,6 +65,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 end
 
+puts "bundle exec rspec --seed #{RSpec.configuration.seed}"
+
 ActiveJob::Base.queue_adapter = :test
 Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 

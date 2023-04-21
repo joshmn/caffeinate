@@ -19,7 +19,7 @@ describe Caffeinate::ScheduleEvaluator do
     let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
 
     it 'succeeds' do
-      assert sub.caffeinate_mailings.first.send_at == 3.days.from_now
+      expect(sub.caffeinate_mailings.first.send_at).to eq 3.days.from_now
     end
   end
 
@@ -34,14 +34,14 @@ describe Caffeinate::ScheduleEvaluator do
       let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
 
       it 'succeeds' do
-        assert sub.mailings.first.send_at == 2.days.from_now
+        expect(sub.mailings.first.send_at).to eq 2.days.from_now
       end
 
       it 'subsequent mailings use the every key' do
         sub.mailings.first.deliver!
 
-        assert sub.mailings.last != sub.mailings.first
-        assert sub.mailings.last.send_at == 3.days.from_now
+        expect(sub.mailings.last).to_not eq(sub.mailings.first)
+        expect(sub.mailings.last.send_at).to eq 3.days.from_now
       end
     end
   end
@@ -61,7 +61,7 @@ describe Caffeinate::ScheduleEvaluator do
     let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
 
     it 'succeeds' do
-      assert sub.mailings.first.send_at == 3.days.from_now.change(hour: 17, min: 2, sec: 2)
+      expect(sub.mailings.first.send_at).to eq(3.days.from_now.change(hour: 17, min: 2, sec: 2))
     end
 
   end
