@@ -25,7 +25,7 @@ module Caffeinate
         # @option options [String] :mailer_class The mailer class
         def default(options = {})
           options.symbolize_keys!
-          options.assert_valid_keys(:mailer_class, :mailer, :using, :batch_size)
+          options.assert_valid_keys(:mailer_class, :mailer, :using, :batch_size, :action_class)
           @defaults = options
         end
       end

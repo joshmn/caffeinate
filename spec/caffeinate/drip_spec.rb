@@ -98,6 +98,5 @@ describe Caffeinate::Drip do
     it 'uses the method' do
       expect(SomeFakeDripper.drip_collection.for(:action_name).send_at).to eq(2.years.from_now.beginning_of_year)
     end
-
   end
 end

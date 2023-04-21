@@ -3,18 +3,22 @@
 
 Important additions/changes/removals will appear here.
 
+
 ## Master (April 20, 2023)
 
 ### Added 
 * RSpec matchers 
+* Ability to use normal Ruby classes, not just ActionMailer
+
+### Changed
+* A `Drip` now accepts an `action_class` option, in addition to the previous options
 
 ## v2.2.0 (March 20, 2023)
 
 ### Fixed
-* Documentation about `rescue_from` in a `Dripper`. 
+* Documentation about `rescue_from` in a `Dripper` 
 
 ### Added
-
 * Ability to add new mailings to a campaign using `CampaignSubscription#refuel!`
     
     - Someone had mentioned that:
@@ -29,7 +33,6 @@ Important additions/changes/removals will appear here.
 * Ruby 3 bug 
 
 ### Added
-
 * Support for rescuing from an error during delivery:
 
     ```

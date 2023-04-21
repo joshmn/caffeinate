@@ -4,7 +4,7 @@ module Caffeinate
   module Dripper
     # A collection of Drip objects for a `Caffeinate::Dripper`
     class DripCollection
-      VALID_DRIP_OPTIONS = [:mailer_class, :step, :delay, :every, :start, :using, :mailer, :at, :on].freeze
+      VALID_DRIP_OPTIONS = [:mailer_class, :action_class, :step, :delay, :every, :start, :using, :mailer, :at, :on].freeze
 
       include Enumerable
 
@@ -45,12 +45,12 @@ module Caffeinate
       def validate_drip_options(action, options)
         options.symbolize_keys!
         options.assert_valid_keys(*VALID_DRIP_OPTIONS)
-        options[:mailer_class] ||= options[:mailer] || @dripper.defaults[:mailer_class]
+        options[:mailer_class] ||= options[:action_class] || options[:mailer] || @dripper.defaults[:mailer_class]
         options[:using] ||= @dripper.defaults[:using]
         options[:step] ||= @dripper.drips.size + 1
 
         if options[:mailer_class].nil?
-          raise ArgumentError, "You must define :mailer_class or :mailer in the options for #{action.inspect} on #{@dripper.inspect}"
+          raise ArgumentError, "You must define :mailer_class, :mailer, or :action_class in the options for #{action.inspect} on #{@dripper.inspect}"
         end
 
         if options[:every].nil? && options[:delay].nil? && options[:on].nil?
