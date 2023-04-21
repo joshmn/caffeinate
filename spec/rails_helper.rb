@@ -77,5 +77,13 @@ class ArgumentMailer < ActionMailer::Base
   end
 end
 
+class AnyMailer < ActionMailer::Base
+  def welcome(_mailing)
+    mail(to: 'argument_mailer@example.com', from: 'argument_mailer@example.com', subject: 'Argument Mailer') do |format|
+      format.text { render plain: 'ArgumentMailer' }
+    end
+  end
+end
+
 # Silence warnings, namely warning: class variable access from toplevel in observer_spec and interceptor_spec
 $VERBOSE = nil

@@ -30,7 +30,7 @@ module Caffeinate
       @mailing = mailing
     end
 
-    # todo: test this decision tree.
+
     def call
       if periodical?
         start = Caffeinate.config.now.call
