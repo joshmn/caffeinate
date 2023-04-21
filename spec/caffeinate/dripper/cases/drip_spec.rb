@@ -5,11 +5,12 @@ require 'rails_helper'
 describe ::Caffeinate::Dripper::Drip do
   class DripDripper < ::Caffeinate::Dripper::Base
     drip :test, delay: 0.hours, step: 1, mailer_class: 'CoolMailer'
+    drip :action_test, delay: 0.hours, step: 1, action_class: 'CoolAction'
   end
 
   describe '.drip' do
     it 'has a drips count' do
-      expect(DripDripper.drips.size).to eq(1)
+      expect(DripDripper.drips.size).to eq(2)
     end
 
     it 'registers a drip with valid arguments' do

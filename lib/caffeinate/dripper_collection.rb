@@ -2,6 +2,8 @@
 
 module Caffeinate
   class DripperCollection
+    delegate :each, to: :@registry
+
     def initialize
       @registry = {}
     end
@@ -12,6 +14,14 @@ module Caffeinate
 
     def resolve(campaign)
       @registry[campaign.slug.to_sym].constantize
+    end
+
+    def drippers
+      @registry.values
+    end
+
+    def clear!
+      @registry = {}
     end
   end
 end

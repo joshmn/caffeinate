@@ -4,6 +4,8 @@ module Caffeinate
   module Dripper
     # A collection of Drip objects for a `Caffeinate::Dripper`
     class DripCollection
+      VALID_DRIP_OPTIONS = [:mailer_class, :action_class, :step, :delay, :every, :start, :using, :mailer, :at, :on].freeze
+
       include Enumerable
 
       def initialize(dripper)
