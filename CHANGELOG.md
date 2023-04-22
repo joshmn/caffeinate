@@ -4,7 +4,7 @@
 Important additions/changes/removals will appear here.
 
 
-## Master (April 20, 2023)
+## Master (April 22, 2023)
 
 ### Added 
 * RSpec matchers 
@@ -12,6 +12,7 @@ Important additions/changes/removals will appear here.
 
 ### Changed
 * A `Drip` now accepts an `action_class` option, in addition to the previous options
+* Calling `subscribe!` will now only `find_or_create` for active subscriptions (using `end!` will cause a subsequent `.subscribe` to yield a new/fresh subscription)
 
 ## v2.2.0 (March 20, 2023)
 

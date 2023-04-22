@@ -170,4 +170,29 @@ describe Caffeinate::CampaignSubscription do
       }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+
+  context 'multiple subscriptions' do
+    it 'creates a new active subscription' do
+      user = create(:user)
+      sub = campaign.subscribe!(user)
+      sub.end!
+      sub2 = campaign.subscribe!(user)
+      expect(sub2).to_not eq(sub)
+    end
+
+    it 'returns an existing subscription if it is only unsubscribed' do
+      user = create(:user)
+      sub = campaign.subscribe!(user)
+      sub.unsubscribe!
+      sub2 = campaign.subscribe!(user)
+      expect(sub2).to eq(sub)
+    end
+
+    it 'returns the existing if there is an active sub' do
+      user = create(:user)
+      sub = campaign.subscribe!(user)
+      sub2 = campaign.subscribe!(user)
+      expect(sub2).to eq(sub)
+    end
+  end
 end
