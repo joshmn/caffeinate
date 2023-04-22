@@ -49,6 +49,7 @@ module Caffeinate
 
     def initialize
       @delivery_method = DeliveryMethod.new
+      @perform_deliveries = true # will only be false if interceptors set it so
     end
 
     class << self
@@ -87,9 +88,10 @@ module Caffeinate
       end
     end
 
-    def process(action_name, mailing)
-      @action_name = action_name
-      self.caffeinate_mailing = mailing
+    def process(action_name, action_args)
+      @action_name = action_name # pass-through for #send
+      @action_args = action_args # pass-through for #send
+      @caffeinate_mailing = mailing if action_args.is_a?(Caffeinate::Mailing)
     end
 
     # Follows Mail::Message
@@ -108,7 +110,7 @@ module Caffeinate
     # Returns self
     def deliver!
       inform_interceptors
-      handled = send(@action_name, caffeinate_mailing)
+      handled = send(@action_name, @action_args)
       if handled.respond_to?(:deliver!) && !handled.is_a?(Caffeinate::Mailing)
         handled.deliver!(self)
       end
@@ -131,7 +133,7 @@ module Caffeinate
     def do_delivery
       begin
         if perform_deliveries
-          handled = send(@action_name, caffeinate_mailing)
+          handled = send(@action_name, @action_args)
           if handled.respond_to?(:deliver!) && !handled.is_a?(Caffeinate::Mailing)
             handled.deliver!(self)
           end
