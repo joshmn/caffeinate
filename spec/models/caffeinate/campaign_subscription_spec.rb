@@ -195,4 +195,13 @@ describe Caffeinate::CampaignSubscription do
       expect(sub2).to eq(sub)
     end
   end
+
+  describe 'on destroy' do
+    it 'does not run on_complete' do
+      allow(subscription).to receive(:completed?).and_return(true)
+      expect(subscription).to_not receive(:on_complete)
+      subscription.destroy!
+    end
+  end
+
 end
