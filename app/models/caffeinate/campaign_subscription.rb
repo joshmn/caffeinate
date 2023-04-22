@@ -99,7 +99,7 @@ module Caffeinate
     # Updates `ended_at` and runs `on_complete` callbacks
     def end!(reason = ::Caffeinate.config.default_ended_reason)
       raise ::Caffeinate::InvalidState, 'CampaignSubscription is already unsubscribed.' if unsubscribed?
-      return true if !!ended_at
+      return true if ended?
 
       update!(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
 
