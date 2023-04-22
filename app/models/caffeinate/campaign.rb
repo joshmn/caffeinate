@@ -74,13 +74,16 @@ module Caffeinate
 
     # Creates a `CampaignSubscription` object for the present Campaign. Allows passing `**args` to
     # delegate additional arguments to the record. Uses `find_or_create_by`.
+    #
+    # If a subscription hasn't ended, any existing subscription will be returned.
     def subscribe(subscriber, **args)
-      caffeinate_campaign_subscriptions.active.find_or_create_by(subscriber: subscriber, **args)
+      caffeinate_campaign_subscriptions.active.find_or_create_by(subscriber: subscriber, ended_at: nil, **args)
     end
 
     # Subscribes an object to a campaign. Raises `ActiveRecord::RecordInvalid` if the record was invalid.
+    # If a subscription hasn't ended, any existing subscription will be returned.
     def subscribe!(subscriber, **args)
-      caffeinate_campaign_subscriptions.active.find_or_create_by!(subscriber: subscriber, **args)
+      caffeinate_campaign_subscriptions.find_or_create_by!(subscriber: subscriber, ended_at: nil, **args)
     end
   end
 end
