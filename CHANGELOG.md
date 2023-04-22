@@ -13,6 +13,7 @@ Important additions/changes/removals will appear here.
 ### Changed
 * A `Drip` now accepts an `action_class` option, in addition to the previous options
 * Calling `subscribe!` will now only `find_or_create` for active subscriptions (using `end!` will cause a subsequent `.subscribe` to yield a new/fresh subscription)
+* If you destroy a `CampaignSubscription` it will no longer hit the `on_complete` callbacks ([#34](https://github.com/joshmn/caffeinate/pull/33))
 
 ## v2.2.0 (March 20, 2023)
 

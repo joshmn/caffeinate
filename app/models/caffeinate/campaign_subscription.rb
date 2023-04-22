@@ -58,7 +58,7 @@ module Caffeinate
 
     after_create :create_mailings!
 
-    after_commit :on_complete, if: :completed?
+    after_commit :on_complete, if: :completed?, unless: :destroyed?
 
     # Add (new) drips to a `CampaignSubscriber`.
     #
