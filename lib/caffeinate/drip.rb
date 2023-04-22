@@ -13,6 +13,7 @@ module Caffeinate
 
     class << self
       def build(dripper, action, options, &block)
+        options = options.with_defaults(dripper.defaults)
         validate_drip_options(dripper, action, options)
 
         new(dripper, action, options, &block)
@@ -23,8 +24,8 @@ module Caffeinate
       def validate_drip_options(dripper, action, options)
         options = normalize_options(dripper, options)
 
-        if options[:mailer_class].nil?
-          raise ArgumentError, "You must define :mailer_class or :mailer in the options for #{action.inspect} on #{dripper.inspect}"
+        if options[:mailer_class].nil? && options[:action_class].nil?
+          raise ArgumentError, "You must define :mailer_class, :mailer, or :action_class in the options for #{action.inspect} on #{dripper.inspect}"
         end
 
         if options[:every].nil? && options[:delay].nil? && options[:on].nil?
