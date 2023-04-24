@@ -9,9 +9,12 @@ Important additions/changes/removals will appear here.
 ### Added 
 * RSpec matchers 
 * Ability to use normal Ruby classes, not just ActionMailer
+* Periodical drip rework [#26](https://github.com/joshmn/caffeinate/pull/26)
+  * now support `every`, `if`, and `start` option
 
 ### Changed
 * A `Drip` now accepts an `action_class` option, in addition to the previous options
+* Periodical drips are now defined with `periodical` [#26](https://github.com/joshmn/caffeinate/pull/26)
 * Calling `subscribe!` will now only `find_or_create` for active subscriptions (using `end!` will cause a subsequent `.subscribe` to yield a new/fresh subscription)
 * If you destroy a `CampaignSubscription` it will no longer hit the `on_complete` callbacks ([#34](https://github.com/joshmn/caffeinate/pull/33))
 

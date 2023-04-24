@@ -8,6 +8,42 @@ module Caffeinate
   #
   # Handles the block and provides convenience methods for the drip
   class Drip
+    ALL_DRIP_OPTIONS = [:mailer_class, :mailer, :start, :using, :step]
+    VALID_DRIP_OPTIONS = ALL_DRIP_OPTIONS + [:delay, :start, :at, :on].freeze
+
+    class << self
+      def build(dripper, action, options, &block)
+        options = options.with_defaults(dripper.defaults)
+        validate_drip_options(dripper, action, options)
+
+        new(dripper, action, options, &block)
+      end
+
+      private
+
+      def validate_drip_options(dripper, action, options)
+        options = normalize_options(dripper, options)
+
+        if options[:mailer_class].nil? && options[:action_class].nil?
+          raise ArgumentError, "You must define :mailer_class, :mailer, or :action_class in the options for #{action.inspect} on #{dripper.inspect}"
+        end
+
+        if options[:every].nil? && options[:delay].nil? && options[:on].nil?
+          raise ArgumentError, "You must define :delay or :on or :every in the options for #{action.inspect} on #{dripper.inspect}"
+        end
+
+        options
+      end
+
+      def normalize_options(dripper, options)
+        options[:mailer_class] ||= options[:mailer] || dripper.defaults[:mailer_class]
+        options[:using] ||= dripper.defaults[:using]
+        options[:step] ||= dripper.drips.size + 1
+
+        options
+      end
+    end
+
     attr_reader :dripper, :action, :options, :block
 
     def initialize(dripper, action, options, &block)
@@ -39,6 +75,13 @@ module Caffeinate
         end
       end
       false
+    end
+
+    # allows for hitting type.periodical? or type.drip?
+    def type
+      name = self.class.name.demodulize.delete_suffix("Drip").presence || "Drip"
+
+      ActiveSupport::StringInquirer.new(name.downcase)
     end
   end
 end

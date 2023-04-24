@@ -14,14 +14,14 @@ describe ::Caffeinate::Dripper::Drip do
     end
 
     it 'registers a drip with valid arguments' do
-      expect(DripDripper.drips.first.options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil })
+      expect(DripDripper.drips.first.options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil, batch_size: 1000 })
     end
   end
 
   context 'strings as keys' do
     it 'converts to symbols' do
       DripDripper.drip 'test_two', 'delay': 0.hours, 'step': 1, 'mailer_class': 'CoolMailer'
-      expect(DripDripper.drip_collection.for(:test_two).options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil })
+      expect(DripDripper.drip_collection.for(:test_two).options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil, batch_size: 1000 })
     end
   end
 

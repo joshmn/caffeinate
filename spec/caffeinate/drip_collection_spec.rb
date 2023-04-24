@@ -23,21 +23,4 @@ describe Caffeinate::Dripper::DripCollection do
       expect(collection[:key]).to eq(collection.instance_variable_get(:@drips)[:key])
     end
   end
-
-  describe '#validate_drip_options' do
-    let(:error) {
-                  begin
-                    collection.send(:validate_drip_options, :name, { mailer_class: 'Test' })
-                  rescue StandardError => e
-                    e
-                  end
-                }
-    it 'raises ArgumentError if invalid' do
-      expect(error.class).to eq(ArgumentError)
-    end
-
-    it 'message contains delay' do
-      expect(error.message).to include(':delay')
-    end
-  end
 end
