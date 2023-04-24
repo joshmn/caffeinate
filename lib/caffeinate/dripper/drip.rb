@@ -47,7 +47,34 @@ module Caffeinate
         #
         # @option options [Symbol] :using Set to `:parameters` if the mailer action uses ActionMailer::Parameters
         def drip(action_name, options = {}, &block)
-          drip_collection.register(action_name, options, &block)
+          drip_collection.register(action_name, options, ::Caffeinate::Drip, &block)
+        end
+
+        # Register a Periodical drip on the Dripper
+        #
+        #   periodical :pay_your_invoice, every: 1.day, start: 0.hours, if: :invoice_unpaid?
+        #
+        # @param action_name [Symbol] the name of the mailer action
+        # @param [Hash] options the options to create a drip with
+        # @option options [String] :mailer_class The mailer_class
+        # @option options [Symbol|Proc|ActiveSupport::Duration] :every How often the mailing should be created
+        # @option options [Symbol|Proc] :if If the periodical should create another mailing
+        # @option options [Symbol|Proc] :start The offset time to start the clock (only used on the first mailing creation)
+        #
+        #   periodical :pay_your_invoice, mailer_class: "InvoiceReminderMailer", if: :invoice_unpaid?
+        #
+        #   class MyDripper
+        #     drip :mailer_action_name, mailer_class: "MailerClass", at: :generate_date
+        #     def generate_date(drip, mailing)
+        #       3.days.from_now.in_time_zone(mailing.subscriber.timezone)
+        #     end
+        #   end
+        #
+        #   drip :mailer_action_name, mailer_class: "MailerClass", at: 'January 1, 2022'
+        #
+        # @option options [Symbol] :using Set to `:parameters` if the mailer action uses ActionMailer::Parameters
+        def periodical_drip(action_name, options = {}, &block)
+          drip_collection.register(action_name, options, ::Caffeinate::PeriodicalDrip, &block)
         end
       end
     end

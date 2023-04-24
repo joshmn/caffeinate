@@ -18,10 +18,8 @@ module Caffeinate
       end
 
       # Register the drip
-      def register(action, options, &block)
-        options = validate_drip_options(action, options)
-
-        @drips[action.to_sym] = ::Caffeinate::Drip.new(@dripper, action, options, &block)
+      def register(action, options, type = ::Caffeinate::Drip, &block)
+        @drips[action.to_sym] = type.build(@dripper, action, options, &block)
       end
 
       def each(&block)
@@ -38,26 +36,6 @@ module Caffeinate
 
       def [](val)
         @drips[val]
-      end
-
-      private
-
-      def validate_drip_options(action, options)
-        options.symbolize_keys!
-        options.assert_valid_keys(*VALID_DRIP_OPTIONS)
-        options[:mailer_class] ||= options[:action_class] || options[:mailer] || @dripper.defaults[:mailer_class]
-        options[:using] ||= @dripper.defaults[:using]
-        options[:step] ||= @dripper.drips.size + 1
-
-        if options[:mailer_class].nil?
-          raise ArgumentError, "You must define :mailer_class, :mailer, or :action_class in the options for #{action.inspect} on #{@dripper.inspect}"
-        end
-
-        if options[:every].nil? && options[:delay].nil? && options[:on].nil?
-          raise ArgumentError, "You must define :delay or :on or :every in the options for #{action.inspect} on #{@dripper.inspect}"
-        end
-
-        options
       end
     end
   end

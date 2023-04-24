@@ -177,6 +177,8 @@ module Caffeinate
         # @yield Caffeinate::Mailing
         # @yield Mail::Message
         def after_send(&block)
+          #  return if after_send_blocks.any? { |after| after.source_location == block.source_location }
+
           after_send_blocks << block
         end
 
