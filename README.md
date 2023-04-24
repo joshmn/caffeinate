@@ -240,7 +240,7 @@ tips, tricks, and shortcuts.
 
 ## Using Without ActionMailer
 
-Now supports POROs <sup>that inherit from a magical class</sup>! Using the example above, implementing an SMS client. The same rules apply, just change `mailer_class` or `mailer` to `action_class`, and create a `Caffeinate::Action` (acts just like an `ActionMailer`). See [Without ActionMailer](docs/6-without-action-mailer.md).) for more.
+Now supports POROs <sup>that inherit from a magical class</sup>! Using the example above, implementing an SMS client. The same rules apply, just change `mailer_class` or `mailer` to `action_class`, and create a `Caffeinate::ActionProxy` (acts just like an `ActionMailer`). See [Without ActionMailer](docs/6-without-action-mailer.md).) for more.
 
 ## But wait, there's more
 

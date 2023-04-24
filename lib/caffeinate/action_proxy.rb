@@ -4,7 +4,7 @@ module Caffeinate
   # Allows you to use a PORO for a drip; acts just like ActionMailer::Base
   #
   # Usage:
-  #   class TextAction < Caffeinate::Action
+  #   class TextAction < Caffeinate::ActionProxy
   #     def welcome(mailing)
   #       user = mailing.subscriber
   #       HTTParty.post("...") # ...
@@ -18,7 +18,7 @@ module Caffeinate
   #
   # usage:
   #
-  #   class TextAction < Caffeinate::Action
+  #   class TextAction < Caffeinate::ActionProxy
   #     class Envelope(user)
   #       @sms = SMS.new(to: user.phone_number)
   #     end

@@ -8,7 +8,7 @@ Important additions/changes/removals will appear here.
 
 ### Added 
 * RSpec matchers 
-* Ability to use normal Ruby classes, not just ActionMailer
+* Ability to use normal Ruby classes, not just ActionMailer, using `Caffeinate::ActionProxy`
 
 ### Changed
 * A `Drip` now accepts an `action_class` option, in addition to the previous options

@@ -39,7 +39,7 @@ end
 
 Note here that we're using `action_class` instead of `mailer_class`. Everything else is the same, though.
 
-### 2. Create a `Caffeinate::Action`
+### 2. Create a `Caffeinate::ActionProxy`
 
 This is a special class that acts similarly to `ActionMailer::Base`.
 
