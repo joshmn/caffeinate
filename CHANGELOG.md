@@ -26,6 +26,10 @@ Important additions/changes/removals will appear here.
 ### Fixed 
 * Calling `end!` in a callback won't end up in an infinite loop. [#35](https://github.com/joshmn/caffeinate/pull/35)
 
+## v2.3
+
+It didn't exist, sorry.
+
 ## v2.2.0 (March 20, 2023)
 
 ### Fixed
