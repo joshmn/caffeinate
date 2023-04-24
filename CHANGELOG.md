@@ -9,9 +9,12 @@ Important additions/changes/removals will appear here.
 ### Added 
 * RSpec matchers 
 * Ability to use normal Ruby classes, not just ActionMailer
+* Periodical drip rework [#26](https://github.com/joshmn/caffeinate/pull/26)
+  * now support `every`, `if`, and `start` option
 
 ### Changed
 * A `Drip` now accepts an `action_class` option, in addition to the previous options
+* Periodical drips are now defined with `periodical` [#26](https://github.com/joshmn/caffeinate/pull/26)
 
 ## v2.2.0 (March 20, 2023)
 
