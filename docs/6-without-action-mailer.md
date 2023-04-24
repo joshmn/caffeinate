@@ -97,7 +97,8 @@ end
 ### 3. Change subclass
 
 ```ruby
-class OnboardingMailer < Caffeinate::Action
+
+class OnboardingMailer < Caffeinate::ActionProxy
   def welcome_to_my_cool_app(mailing)
     @user = mailing.subscriber
     mail(to: @user.email, subject: "Welcome to CoolApp!")

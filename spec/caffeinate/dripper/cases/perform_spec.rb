@@ -51,7 +51,7 @@ describe ::Caffeinate::Dripper::Perform do
   end
 
   describe 'action classes' do
-    class TestActionClass < Caffeinate::Action
+    class TestActionClass < Caffeinate::ActionProxy
       class FakeDelivery
         def initialize
 

@@ -36,7 +36,7 @@ module Caffeinate
   #       Envelope.new(mailing.subscriber)
   #     end
   #   end
-  class Action
+  class ActionProxy
     attr_accessor :caffeinate_mailing
     attr_accessor :perform_deliveries
     attr_reader :action_name

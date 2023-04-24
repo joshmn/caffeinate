@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe Caffeinate::Action do
-  class CoolOneOffAction < Caffeinate::Action
+describe Caffeinate::ActionProxy do
+  class CoolOneOffAction < Caffeinate::ActionProxy
     def return_nil(mailing)
 
     end
