@@ -3,6 +3,11 @@
 
 Important additions/changes/removals will appear here.
 
+## Master 
+
+### Fixed
+* If you `touch` a mailing it'll check if it needs to `#end_if_no_mailings` properly [#36](https://github.com/joshmn/caffeinate/pull/36)
+
 ## 2.4 (April 24, 2023)
 
 ### Added 

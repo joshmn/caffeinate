@@ -150,4 +150,60 @@ describe ::Caffeinate::Mailing do
       end
     end
   end
+
+  describe '#deliver_later!' do
+    class FakeAsyncDeliveryLater
+      def self.perform_later(id)
+
+      end
+    end
+    class FakeAsyncDeliveryAsync
+      def self.perform_async(id)
+
+      end
+    end
+
+    context 'async' do
+      before do
+        ::Caffeinate.config.async_delivery_class = 'FakeAsyncDeliveryAsync'
+      end
+
+      after do
+        ::Caffeinate.config.async_delivery_class = nil
+      end
+      let(:mailing) { unsent_mailings.first }
+
+      it 'calls the later' do
+        expect(FakeAsyncDeliveryAsync).to receive(:perform_async).with(mailing.id)
+        mailing.deliver_later!
+      end
+    end
+
+    context 'later' do
+      before do
+        ::Caffeinate.config.async_delivery_class = 'FakeAsyncDeliveryLater'
+      end
+
+      after do
+        ::Caffeinate.config.async_delivery_class = nil
+      end
+      let(:mailing) { unsent_mailings.first }
+
+      it 'calls the later' do
+        expect(FakeAsyncDeliveryLater).to receive(:perform_later).with(mailing.id)
+        mailing.deliver_later!
+      end
+    end
+  end
+
+  context '#end_if_no_mailings' do
+    let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
+    let(:unsent) { create_list(:caffeinate_mailing, 5, :unsent, caffeinate_campaign_subscription: subscription) }
+
+    it 'ends!' do
+      subscription.future_mailings.update_all(sent_at: Time.current)
+      expect_any_instance_of(Caffeinate::CampaignSubscription).to receive(:end!)
+      subscription.mailings.last.touch
+    end
+  end
 end
