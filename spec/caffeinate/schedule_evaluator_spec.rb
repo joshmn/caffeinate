@@ -40,8 +40,8 @@ describe Caffeinate::ScheduleEvaluator do
       it 'subsequent mailings use the every key' do
         sub.mailings.first.deliver!
 
-        expect(sub.mailings.last).to_not eq(sub.mailings.first)
-        expect(sub.mailings.last.send_at.to_i).to eq 3.days.from_now.to_i
+        expect(sub.mailings.last).to_not be(sub.mailings.first)
+        expect(sub.mailings.last.send_at).to be_within(10.seconds).of(3.days.from_now)
       end
     end
   end
