@@ -91,7 +91,7 @@ module Caffeinate
     def process(action_name, action_args)
       @action_name = action_name # pass-through for #send
       @action_args = action_args # pass-through for #send
-      @caffeinate_mailing = mailing if action_args.is_a?(Caffeinate::Mailing)
+      self.caffeinate_mailing = action_args if action_args.is_a?(Caffeinate::Mailing)
     end
 
     # Follows Mail::Message
