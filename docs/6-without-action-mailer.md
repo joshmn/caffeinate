@@ -49,7 +49,7 @@ To change our drips to a PORO-handled object, we need to:
 
 1. Change each `drip` option `mailer` to `action_class` in `OnboardingDripper` to `OnboardingAction`
 2. Rename `OnboardingMailer` to `OnboardingAction`
-3. Have `OnboardingAction` inherit from `Caffeinate::Action`
+3. Have `OnboardingAction` inherit from `Caffeinate::ActionProxy`
 4. Do something other than `mail`
 
 ### 1. Change drip option
@@ -97,7 +97,8 @@ end
 ### 3. Change subclass
 
 ```ruby
-class OnboardingMailer < Caffeinate::Action
+
+class OnboardingMailer < Caffeinate::ActionProxy
   def welcome_to_my_cool_app(mailing)
     @user = mailing.subscriber
     mail(to: @user.email, subject: "Welcome to CoolApp!")

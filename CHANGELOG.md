@@ -8,7 +8,7 @@ Important additions/changes/removals will appear here.
 
 ### Added 
 * RSpec matchers 
-* Ability to use normal Ruby classes, not just ActionMailer
+* Ability to use normal Ruby classes, not just ActionMailer, using `Caffeinate::ActionProxy`
 * Periodical drip rework [#26](https://github.com/joshmn/caffeinate/pull/26)
   * now support `every`, `if`, and `start` option
 

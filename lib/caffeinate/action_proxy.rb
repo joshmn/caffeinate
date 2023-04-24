@@ -4,7 +4,7 @@ module Caffeinate
   # Allows you to use a PORO for a drip; acts just like ActionMailer::Base
   #
   # Usage:
-  #   class TextAction < Caffeinate::Action
+  #   class TextAction < Caffeinate::ActionProxy
   #     def welcome(mailing)
   #       user = mailing.subscriber
   #       HTTParty.post("...") # ...
@@ -18,7 +18,7 @@ module Caffeinate
   #
   # usage:
   #
-  #   class TextAction < Caffeinate::Action
+  #   class TextAction < Caffeinate::ActionProxy
   #     class Envelope(user)
   #       @sms = SMS.new(to: user.phone_number)
   #     end
@@ -36,7 +36,7 @@ module Caffeinate
   #       Envelope.new(mailing.subscriber)
   #     end
   #   end
-  class Action
+  class ActionProxy
     attr_accessor :caffeinate_mailing
     attr_accessor :perform_deliveries
     attr_reader :action_name
@@ -49,6 +49,7 @@ module Caffeinate
 
     def initialize
       @delivery_method = DeliveryMethod.new
+      @perform_deliveries = true # will only be false if interceptors set it so
     end
 
     class << self
@@ -87,9 +88,10 @@ module Caffeinate
       end
     end
 
-    def process(action_name, mailing)
-      @action_name = action_name
-      self.caffeinate_mailing = mailing
+    def process(action_name, action_args)
+      @action_name = action_name # pass-through for #send
+      @action_args = action_args # pass-through for #send
+      self.caffeinate_mailing = action_args if action_args.is_a?(Caffeinate::Mailing)
     end
 
     # Follows Mail::Message
@@ -108,7 +110,7 @@ module Caffeinate
     # Returns self
     def deliver!
       inform_interceptors
-      handled = send(@action_name, caffeinate_mailing)
+      handled = send(@action_name, @action_args)
       if handled.respond_to?(:deliver!) && !handled.is_a?(Caffeinate::Mailing)
         handled.deliver!(self)
       end
@@ -131,7 +133,7 @@ module Caffeinate
     def do_delivery
       begin
         if perform_deliveries
-          handled = send(@action_name, caffeinate_mailing)
+          handled = send(@action_name, @action_args)
           if handled.respond_to?(:deliver!) && !handled.is_a?(Caffeinate::Mailing)
             handled.deliver!(self)
           end

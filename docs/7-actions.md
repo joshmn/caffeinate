@@ -39,12 +39,13 @@ end
 
 Note here that we're using `action_class` instead of `mailer_class`. Everything else is the same, though.
 
-### 2. Create a `Caffeinate::Action`
+### 2. Create a `Caffeinate::ActionProxy`
 
-This is a special class that acts similarly to `ActionMailer::Base`. 
+This is a special class that acts similarly to `ActionMailer::Base`.
 
 ```ruby
-class UserAction < Caffeinate::Action
+
+class UserAction < Caffeinate::ActionProxy
   def welcome(mailing)
     user = mailing.subscriber
 
@@ -66,7 +67,7 @@ class UserAction < Caffeinate::Action
 
     message.send!
   end
-  
+
   def upsell(mailing)
     user = mailing.subscriber
 
@@ -95,20 +96,21 @@ To do this, return an object that responds to `deliver!` in the method. This met
 Here's an example:
 
 ```ruby
-class UserAction < Caffeinate::Action
+
+class UserAction < Caffeinate::ActionProxy
   class Envelope
     def initialize(user)
       @sms = SMS.new
-      @sms.to = user.phone_number 
+      @sms.to = user.phone_number
     end
-    
+
     def deliver!(action)
       # action will expose `#caffeinate_mailing` and `#action_name`
       @sms.body = # ... 
-      @sms.send! 
+        @sms.send!
     end
   end
-  
+
   def welcome(mailing)
     user = mailing.subscriber
 
@@ -117,13 +119,13 @@ class UserAction < Caffeinate::Action
 
   def hows_it_going(mailing)
     user = mailing.subscriber
-    
+
     Envelope.new(user)
   end
-  
+
   def upsell(mailing)
     user = mailing.subscriber
-    
+
     Envelope.new(user)
   end
 end
