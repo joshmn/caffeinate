@@ -34,6 +34,15 @@ describe Caffeinate::CampaignSubscription do
   end
 
   describe '#end!' do
+    context 'when already ended' do
+      it 'no-ops on subsequent #end! calls' do
+        subscription.end!
+        first_ended_at = subscription.ended_at
+        expect(subscription).to_not receive(:update!)
+        subscription.end!
+        expect(first_ended_at).to eq subscription.ended_at
+      end
+    end
     context 'without argument' do
       it 'is not ended' do
         expect(subscription).not_to be_ended
@@ -170,4 +179,38 @@ describe Caffeinate::CampaignSubscription do
       }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+
+  context 'multiple subscriptions' do
+    it 'creates a new active subscription' do
+      user = create(:user)
+      sub = campaign.subscribe!(user)
+      sub.end!
+      sub2 = campaign.subscribe!(user)
+      expect(sub2).to_not eq(sub)
+    end
+
+    it 'returns an existing subscription if it is only unsubscribed' do
+      user = create(:user)
+      sub = campaign.subscribe!(user)
+      sub.unsubscribe!
+      sub2 = campaign.subscribe!(user)
+      expect(sub2).to eq(sub)
+    end
+
+    it 'returns the existing if there is an active sub' do
+      user = create(:user)
+      sub = campaign.subscribe!(user)
+      sub2 = campaign.subscribe!(user)
+      expect(sub2).to eq(sub)
+    end
+  end
+
+  describe 'on destroy' do
+    it 'does not run on_complete' do
+      allow(subscription).to receive(:completed?).and_return(true)
+      expect(subscription).to_not receive(:on_complete)
+      subscription.destroy!
+    end
+  end
+
 end
