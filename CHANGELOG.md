@@ -15,6 +15,9 @@ Important additions/changes/removals will appear here.
 * Calling `subscribe!` will now only `find_or_create` for active subscriptions (using `end!` will cause a subsequent `.subscribe` to yield a new/fresh subscription)
 * If you destroy a `CampaignSubscription` it will no longer hit the `on_complete` callbacks ([#34](https://github.com/joshmn/caffeinate/pull/33))
 
+### Fixed 
+* Calling `end!` in a callback won't end up in an infinite loop. ([#35](https://github.com/joshmn/caffeinate/pull/35))
+
 ## v2.2.0 (March 20, 2023)
 
 ### Fixed

@@ -34,6 +34,15 @@ describe Caffeinate::CampaignSubscription do
   end
 
   describe '#end!' do
+    context 'when already ended' do
+      it 'no-ops on subsequent #end! calls' do
+        subscription.end!
+        first_ended_at = subscription.ended_at
+        expect(subscription).to_not receive(:update!)
+        subscription.end!
+        expect(first_ended_at).to eq subscription.ended_at
+      end
+    end
     context 'without argument' do
       it 'is not ended' do
         expect(subscription).not_to be_ended
