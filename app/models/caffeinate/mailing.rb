@@ -131,7 +131,7 @@ module Caffeinate
     end
 
     def end_if_no_mailings!
-      end! if future_mailings.empty?
+      caffeinate_campaign_subscription.end! if caffeinate_campaign_subscription.future_mailings.empty?
     end
   end
 end
