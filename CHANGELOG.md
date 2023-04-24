@@ -3,23 +3,23 @@
 
 Important additions/changes/removals will appear here.
 
-
-## Master (April 22, 2023)
+## 2.4 (April 24, 2023)
 
 ### Added 
-* RSpec matchers 
-* Ability to use normal Ruby classes, not just ActionMailer, using `Caffeinate::ActionProxy`
+* RSpec matchers [#30](https://github.com/joshmn/caffeinate/pull/30)
+* Ability to use normal Ruby classes, not just ActionMailer, using `Caffeinate::ActionProxy` [#24](https://github.com/joshmn/caffeinate/pull/24)
 * Periodical drip rework [#26](https://github.com/joshmn/caffeinate/pull/26)
   * now support `every`, `if`, and `start` option
+* Ability to automatically call all drippers with `Caffeinate.perform!` [#28](https://github.com/joshmn/caffeinate/pull/28)
 
 ### Changed
-* A `Drip` now accepts an `action_class` option, in addition to the previous options
+* A `Drip` now accepts an `action_class` option, in addition to the previous options [#24](https://github.com/joshmn/caffeinate/pull/24)
 * Periodical drips are now defined with `periodical` [#26](https://github.com/joshmn/caffeinate/pull/26)
-* Calling `subscribe!` will now only `find_or_create` for active subscriptions (using `end!` will cause a subsequent `.subscribe` to yield a new/fresh subscription)
-* If you destroy a `CampaignSubscription` it will no longer hit the `on_complete` callbacks ([#34](https://github.com/joshmn/caffeinate/pull/33))
+* Calling `subscribe!` will now only `find_or_create` for active subscriptions (using `end!` will cause a subsequent `.subscribe` to yield a new/fresh subscription) [#31](https://github.com/joshmn/caffeinate/pull/31)
+* If you destroy a `CampaignSubscription` it will no longer hit the `on_complete` callbacks [#34](https://github.com/joshmn/caffeinate/pull/33)
 
 ### Fixed 
-* Calling `end!` in a callback won't end up in an infinite loop. ([#35](https://github.com/joshmn/caffeinate/pull/35))
+* Calling `end!` in a callback won't end up in an infinite loop. [#35](https://github.com/joshmn/caffeinate/pull/35)
 
 ## v2.2.0 (March 20, 2023)
 
