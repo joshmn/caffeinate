@@ -1,3 +1,3 @@
 module Caffeinate
-  VERSION = "2.4"
+  VERSION = ""
 end
