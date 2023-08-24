@@ -39,4 +39,8 @@ module Caffeinate
   def self.setup
     yield config
   end
+
+  def self.test_mode!
+
+  end
 end

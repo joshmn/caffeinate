@@ -255,7 +255,7 @@ Caffeinate also...
 * ✅ Tested against large databases at AngelList and is performant as hell
 * ✅ Effortlessly handles complex workflows
     - Need to skip a certain mailing? You can!
- 
+
 ## Documentation
 
 * [Getting started, tips and tricks](https://github.com/joshmn/caffeinate/blob/master/docs/README.md)

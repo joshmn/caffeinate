@@ -20,6 +20,15 @@ module Caffeinate
       @registry.values
     end
 
+    # Caffeinate maintains a couple of class-variables under the hood
+    # that don't get reset between specs (while the db records they cache do
+    # get truncated). This resets the appropriate class-variables between specs
+    def clear_cache!
+      drippers.each do |dripper|
+        dripper.safe_constantize.class_eval { @caffeinate_campaign = nil }
+      end
+    end
+
     def clear!
       @registry = {}
     end

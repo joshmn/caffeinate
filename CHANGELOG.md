@@ -3,10 +3,17 @@
 
 Important additions/changes/removals will appear here.
 
-## Master 
+## Unreleased
+
+Nothing.
+
+## 2.5 (August 24, 2023)
 
 ### Fixed
 * If you `touch` a mailing it'll check if it needs to `#end_if_no_mailings` properly [#36](https://github.com/joshmn/caffeinate/pull/36)
+
+### Added
+* `Caffeinate.dripper_collection.clear_cache!` to resolve https://github.com/joshmn/caffeinate/issues/39
 
 ## 2.4 (April 24, 2023)
 
