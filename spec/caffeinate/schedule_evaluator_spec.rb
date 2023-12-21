@@ -16,7 +16,7 @@ describe Caffeinate::ScheduleEvaluator do
       campaign
     end
 
-    let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
+    let(:sub) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
     it 'succeeds' do
       expect(sub.caffeinate_mailings.first.send_at.to_i).to eq 3.days.from_now.to_i
@@ -31,7 +31,7 @@ describe Caffeinate::ScheduleEvaluator do
         campaign
       end
 
-      let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
+      let(:sub) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
       it 'succeeds' do
         expect(sub.mailings.first.send_at.to_i).to eq 2.days.from_now.to_i
@@ -58,7 +58,7 @@ describe Caffeinate::ScheduleEvaluator do
       campaign
     end
 
-    let(:sub) { create(:caffeinate_campaign_subscription, campaign: campaign) }
+    let(:sub) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
     it 'succeeds' do
       expect(sub.mailings.first.send_at.to_i).to eq(3.days.from_now.change(hour: 17, min: 2, sec: 2).to_i)
