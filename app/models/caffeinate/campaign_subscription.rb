@@ -38,8 +38,7 @@ module Caffeinate
     has_one :previous_mailing, -> { sent.order(sent_at: :desc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
 
     belongs_to :caffeinate_campaign, class_name: 'Caffeinate::Campaign', foreign_key: :caffeinate_campaign_id
-    alias_attribute :campaign, :caffeinate_campaign
-
+    alias_method :campaign, :caffeinate_campaign
     belongs_to :subscriber, polymorphic: true
     belongs_to :user, polymorphic: true, optional: true
 
