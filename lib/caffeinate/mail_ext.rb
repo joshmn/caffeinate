@@ -12,7 +12,8 @@ module Mail
     def caffeinate_mailing=(mailing)
       @caffeinate_mailing = mailing
       if mailing.is_a?(::Caffeinate::Mailing)
-        header['List-Unsubscribe'] = "<#{Caffeinate::UrlHelpers.caffeinate_subscribe_url(mailing.subscription)}>"
+        header['List-Unsubscribe'] = "<#{Caffeinate::UrlHelpers.caffeinate_unsubscribe_url(mailing.subscription)}>"
+        header['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click'
       end
     end
 
