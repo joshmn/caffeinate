@@ -13,9 +13,7 @@ module Caffeinate
     def unsubscribe
       @campaign_subscription.unsubscribe!(true)
 
-      if request.post?
-        head :ok
-      end
+      head :ok if request.post?
     end
 
     def subscribe
