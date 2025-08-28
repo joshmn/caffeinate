@@ -8,6 +8,8 @@ module Caffeinate
 
     before_action :find_campaign_subscription!
 
+    skip_before_action :verify_authenticity_token, only: [:unsubscribe]
+
     def unsubscribe
       @campaign_subscription.unsubscribe!(true)
     end
