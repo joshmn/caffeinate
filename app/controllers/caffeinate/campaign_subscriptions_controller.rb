@@ -8,10 +8,14 @@ module Caffeinate
 
     before_action :find_campaign_subscription!
 
-    skip_before_action :verify_authenticity_token, only: [:unsubscribe]
+    skip_before_action :verify_authenticity_token, only: [:unsubscribe], if: -> { request.post? }
 
     def unsubscribe
       @campaign_subscription.unsubscribe!(true)
+
+      if request.post?
+        head :ok
+      end
     end
 
     def subscribe
