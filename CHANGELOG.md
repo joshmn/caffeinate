@@ -7,6 +7,15 @@ Important additions/changes/removals will appear here.
 
 Nothing.
 
+## 2.6.1 (January 23, 2026)
+
+### Fixed
+* Improper use of bang method in `README.md` ([@mnort9](https://github.com/mnort9) [#49](https://github.com/joshmn/caffeinate/pull/49))
+* Fix the unsubscribe link in the header ([@guillemap](https://github.com/guillemap) [#50](https://github.com/joshmn/caffeinate/pull/50))
+
+### Added 
+* Add `List-Unsubscribe-Post` header (including implementation of route and controller for one-click unsubscribe) ([@guillemap](https://github.com/guillemap) [#50](https://github.com/joshmn/caffeinate/pull/50))
+
 ## 2.6 (January 23, 2026)
 
 ### Fixed
