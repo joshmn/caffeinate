@@ -57,6 +57,12 @@ describe Caffeinate::ActionMailer::Interceptor do
         described_class.delivering_email(mail)
       end
 
+      it 'has a List-Unsubscribe-Post header' do
+        mail.caffeinate_mailing = mailing
+        expect(mail.header['List-Unsubscribe-Post']).to be_present
+        described_class.delivering_email(mail)
+      end
+
       it 'runs before_send callbacks' do
         mail.caffeinate_mailing = mailing
         described_class.delivering_email(mail)
