@@ -6,9 +6,6 @@
     <a href="https://codecov.io/gh/joshmn/caffeinate">
         <img src="https://codecov.io/gh/joshmn/caffeinate/branch/master/graph/badge.svg?token=5LCOB4ESHL" alt="Coverage"/>
     </a>
-    <a href="https://codeclimate.com/github/joshmn/caffeinate/maintainability">
-        <img src="https://api.codeclimate.com/v1/badges/9c075416ce74985d5c6c/maintainability" alt="Maintainability"/>
-    </a>
      <a href="https://inch-ci.org/github/joshmn/caffeinate">
         <img src="https://inch-ci.org/github/joshmn/caffeinate.svg?branch=master" alt="Docs"/>
     </a>
