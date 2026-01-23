@@ -152,6 +152,19 @@ $ rails g caffeinate:install
 $ rake db:migrate
 ```
 
+Optionally, use different flags for supporting `bigint` or `uuid`:
+
+```bash
+# UUID with pgcrypto (PostgreSQL < 13)                                                                                                         
+rails g caffeinate:install --uuid                                                                                                              
+                                                                                                                                               
+# UUID without pgcrypto (PostgreSQL 13+)                                                                                                       
+rails g caffeinate:install --uuid --skip-pgcrypto                                                                                              
+                                                                                                                                               
+# Or via primary-key-type                                                                                                                      
+rails g caffeinate:install --primary-key-type=uuid --skip-pgcrypto                                                                             
+```
+
 ### Clean up the business logic
 
 Assuming you intend to use Caffeinate to handle emails using ActionMailer, mailers should be responsible for receiving context and creating a `mail` object. Nothing more. (If you are looking for examples that don't use ActionMailer, see [Without ActionMailer](docs/6-without-action-mailer.md).)

@@ -5,7 +5,12 @@ Important additions/changes/removals will appear here.
 
 ## Unreleased
 
-Nothing.
+### Fixed
+* `alias_method > alias_attribute` for non-attributes
+
+### Added
+* `UUID` and `bigint` support 
+* Test helpers to test against Postgres (default is sqlite)
 
 ## 2.5 (August 24, 2023)
 

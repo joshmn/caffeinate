@@ -9,10 +9,13 @@ module Caffeinate
       desc 'Creates a Caffeinate initializer and copies migrations to your application.'
 
       class_option :uuid, type: :boolean, default: false,
-        desc: 'Use UUID primary keys (requires PostgreSQL with pgcrypto)'
+        desc: 'Use UUID primary keys'
 
       class_option :primary_key_type, type: :string, default: nil,
         desc: 'Primary key type: uuid, bigint, or integer (default)'
+
+      class_option :skip_pgcrypto, type: :boolean, default: false,
+        desc: 'Skip pgcrypto extension (PostgreSQL 13+ has gen_random_uuid built-in)'
 
       def primary_key_type
         return :uuid if options[:uuid]
@@ -39,7 +42,7 @@ module Caffeinate
       end
 
       def enable_pgcrypto?
-        primary_key_type == :uuid
+        primary_key_type == :uuid && !options[:skip_pgcrypto]
       end
 
       # :nodoc:

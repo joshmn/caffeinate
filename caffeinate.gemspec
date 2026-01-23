@@ -18,14 +18,19 @@ Gem::Specification.new do |spec|
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency 'rails', '>= 5.0.0'
+  spec.add_dependency 'activerecord', '>= 5.0.0'
+  spec.add_dependency 'actionpack', '>= 5.0.0'
+  spec.add_dependency 'actionmailer', '>= 5.0.0'
+  spec.add_dependency 'actionview', '>= 5.0.0'
 
   spec.add_development_dependency 'factory_bot_rails'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-rails'
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'pg'
   spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'sprockets-rails'
   spec.add_development_dependency 'timecop'
   spec.add_development_dependency 'codecov'
 end

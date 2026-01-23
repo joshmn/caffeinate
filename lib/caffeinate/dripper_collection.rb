@@ -25,7 +25,7 @@ module Caffeinate
     # get truncated). This resets the appropriate class-variables between specs
     def clear_cache!
       drippers.each do |dripper|
-        dripper.safe_constantize.class_eval { @caffeinate_campaign = nil }
+        dripper.safe_constantize&.instance_variable_set(:@caffeinate_campaign, nil)
       end
     end
 

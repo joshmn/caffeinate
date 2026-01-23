@@ -3,6 +3,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 
 require 'bundler/setup'
+require 'ostruct'
 
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -11,6 +12,8 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'rspec/rails'
 require 'factory_bot'
+
+require_relative 'support/configurable_schema'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -57,7 +60,12 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.before(:suite) do
+    ConfigurableSchema.setup!
     FactoryBot.find_definitions
+  end
+
+  config.before(:each) do
+    Caffeinate.dripper_collection.clear_cache!
   end
 
   config.use_transactional_fixtures = true
