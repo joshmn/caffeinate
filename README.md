@@ -229,7 +229,7 @@ a `Caffeinate::CampaignSubscription`.
 ```ruby
 class User < ApplicationRecord
   after_commit on: :create do
-    OnboardingDripper.subscribe!(self)
+    OnboardingDripper.subscribe(self)
   end
 end
 ```
