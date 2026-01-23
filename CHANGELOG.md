@@ -5,6 +5,10 @@ Important additions/changes/removals will appear here.
 
 ## Unreleased
 
+Nothing.
+
+## 2.6 (January 23, 2026)
+
 ### Fixed
 * `alias_method > alias_attribute` for non-attributes
 
