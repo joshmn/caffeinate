@@ -2,7 +2,11 @@
 
 class CreateCaffeinateCampaigns < ActiveRecord::Migration<%= migration_version %>
   def change
-    create_table :caffeinate_campaigns do |t|
+<% if enable_pgcrypto? -%>
+    enable_extension 'pgcrypto' unless extension_enabled?('pgcrypto')
+
+<% end -%>
+    create_table :caffeinate_campaigns<%= primary_key_option %> do |t|
       t.string :name, null: false
       t.string :slug, null: false
       t.boolean :active, default: true, null: false

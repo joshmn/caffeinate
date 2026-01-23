@@ -4,12 +4,12 @@ class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration<%= migrati
   def change
     drop_table :caffeinate_campaign_subscriptions if table_exists?(:caffeinate_campaign_subscriptions)
 
-    create_table :caffeinate_campaign_subscriptions do |t|
-      t.references :caffeinate_campaign, null: false, index: { name: :caffeineate_campaign_subscriptions_on_campaign }, foreign_key: true
+    create_table :caffeinate_campaign_subscriptions<%= primary_key_option %> do |t|
+      t.references :caffeinate_campaign, null: false, index: { name: :caffeineate_campaign_subscriptions_on_campaign }, foreign_key: true<%= foreign_key_type %>
       t.string :subscriber_type, null: false
-      t.integer :subscriber_id, null: false
+      t.<%= column_type_for_polymorphic %> :subscriber_id, null: false
       t.string :user_type
-      t.integer :user_id
+      t.<%= column_type_for_polymorphic %> :user_id
       t.string :token, null: false
       t.datetime :ended_at
       t.string :ended_reason

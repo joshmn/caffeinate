@@ -8,6 +8,40 @@ module Caffeinate
 
       desc 'Creates a Caffeinate initializer and copies migrations to your application.'
 
+      class_option :uuid, type: :boolean, default: false,
+        desc: 'Use UUID primary keys (requires PostgreSQL with pgcrypto)'
+
+      class_option :primary_key_type, type: :string, default: nil,
+        desc: 'Primary key type: uuid, bigint, or integer (default)'
+
+      def primary_key_type
+        return :uuid if options[:uuid]
+        return options[:primary_key_type].to_sym if options[:primary_key_type]
+        nil
+      end
+
+      def primary_key_option
+        return '' unless primary_key_type
+        ", id: :#{primary_key_type}"
+      end
+
+      def foreign_key_type
+        return '' unless primary_key_type
+        ", type: :#{primary_key_type}"
+      end
+
+      def column_type_for_polymorphic
+        case primary_key_type
+        when :uuid then :uuid
+        when :bigint then :bigint
+        else :integer
+        end
+      end
+
+      def enable_pgcrypto?
+        primary_key_type == :uuid
+      end
+
       # :nodoc:
       def copy_initializer
         template 'caffeinate.rb', 'config/initializers/caffeinate.rb'
